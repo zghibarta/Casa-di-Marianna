@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 190 55% 82%; /* #BBE4E9 - Powder Blue */
+    --foreground: 200 14% 26%; /* #37474F - păstrăm aceeași culoare pentru text */
+
+    --card: 0 0% 100%;
+    --card-foreground: 200 14% 26%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 14% 26%;
+
+    --primary: 101 33% 50%; /* #7BB661 - Bud Green */
+    --primary-foreground: 0 0% 100%; /* #FFFFFF */
+
+    --secondary: 190 55% 82%; /* #BBE4E9 - Powder Blue */
+    --secondary-foreground: 200 14% 26%;
+
+    --muted: 190 40% 90%;
+    --muted-foreground: 200 10% 40%;
+
+    --accent: 190 40% 90%;
+    --accent-foreground: 200 14% 26%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 190 30% 85%;
+    --input: 190 30% 85%;
+    --ring: 101 33% 50%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 200 14% 26%;
+    --foreground: 190 55% 82%;
+
+    --card: 200 14% 26%;
+    --card-foreground: 190 55% 82%;
+
+    --popover: 200 14% 26%;
+    --popover-foreground: 190 55% 82%;
+
+    --primary: 101 33% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 200 20% 36%;
+    --secondary-foreground: 190 55% 82%;
+
+    --muted: 200 20% 36%;
+    --muted-foreground: 190 40% 90%;
+
+    --accent: 200 20% 36%;
+    --accent-foreground: 190 55% 82%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 200 20% 36%;
+    --input: 200 20% 36%;
+    --ring: 101 33% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1 {
+    @apply text-3xl font-bold md:text-4xl lg:text-5xl;
+  }
+  h2 {
+    @apply text-2xl font-bold md:text-3xl lg:text-4xl;
+  }
+  h3 {
+    @apply text-xl font-bold md:text-2xl lg:text-3xl;
+  }
+  h4 {
+    @apply text-lg font-bold md:text-xl;
+  }
+  p {
+    @apply leading-relaxed;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 font-medium py-2 px-6 rounded-md transition-all duration-300 shadow-md;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/90 font-medium py-2 px-6 rounded-md transition-all duration-300 shadow-md;
+  }
+
+  .container-custom {
+    @apply container mx-auto px-4 md:px-6 lg:px-8 max-w-7xl;
+  }
+
+  .section-padding {
+    @apply py-8 md:py-10 lg:py-12;
+  }
+
+  .card {
+    @apply bg-card text-card-foreground rounded-lg shadow-md p-6 transition-all duration-300 hover:shadow-lg;
+  }
+}
+
+.animate-icon {
+  transition: transform 0.3s ease;
+}
+
+.animate-icon:hover {
+  transform: translateY(-5px);
+}
