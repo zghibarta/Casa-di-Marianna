@@ -1,30 +1,6 @@
-# casa
+# Casa di Marianna
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+Programe Transformaționale | Casa di Marianna
+Transformare autentică prin consiliere psihologică, echilibru nutrițional și remodelare corporală
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/aurs-projects-bad92e5d/v0-casa)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/JM2DyNjytJt)
-
-## Overview
-
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
-
-## Deployment
-
-Your project is live at:
-
-**[https://vercel.com/aurs-projects-bad92e5d/v0-casa](https://vercel.com/aurs-projects-bad92e5d/v0-casa)**
-
-## Build your app
-
-Continue building your app on:
-
-**[https://v0.dev/chat/projects/JM2DyNjytJt](https://v0.dev/chat/projects/JM2DyNjytJt)**
-
-## How It Works
-
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+https://casadimarianna.com
