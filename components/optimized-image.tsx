@@ -19,10 +19,15 @@ export default function OptimizedImage({
   className = "",
   priority = false,
 }: OptimizedImageProps) {
+  // Convertim URL-ul Vercel Blob în URL relativ
+  const convertedSrc = src.startsWith("https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/")
+    ? `/images/${src.split("/").pop()}`
+    : src
+
   return (
     <Image
-      src={src || "/placeholder.svg"}
-      alt="Serviciile Casa di Marianna"
+      src={convertedSrc || "/placeholder.svg"}
+      alt={alt}
       width={fill ? undefined : width}
       height={fill ? undefined : height}
       fill={fill}

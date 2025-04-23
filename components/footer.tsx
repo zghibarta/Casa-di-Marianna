@@ -9,11 +9,13 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-bold mb-4">Casa di Marianna</h3>
             <p className="text-foreground mb-4">
-              Abordare integrată pentru slăbire sănătoasă: nutriție personalizată, proceduri specializate și suport
-              psihologic pentru rezultate de durată.
+              Transformare autentică prin consiliere psihologică, asistență nutrițională și remodelare corporală.
             </p>
             <div className="flex space-x-4">
-              <Link href="https://www.facebook.com/SlabestecumineMasaj.Nutritie" className="text-foreground hover:text-primary">
+              <Link
+                href="https://www.facebook.com/SlabestecumineMasaj.Nutritie"
+                className="text-foreground hover:text-primary"
+              >
                 <Facebook size={20} />
                 <span className="sr-only">Facebook</span>
               </Link>
@@ -31,11 +33,11 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-bold mb-4">Link-uri rapide</h3>
             <ul className="space-y-2">
-              <li>
+              {/*<li>
                 <Link href="/" className="text-foreground hover:text-primary">
                   Acasă
                 </Link>
-              </li>
+              </li>*/}
               <li>
                 <Link href="/servicii" className="text-foreground hover:text-primary">
                   Servicii

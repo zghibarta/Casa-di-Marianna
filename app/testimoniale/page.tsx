@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     siteName: "Casa di Marianna",
     images: [
       {
-        url: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/blog/blog_mentinere.jpg",
+        url: "https://casadimarianna.com/images/blog/blog_mentinere.jpg", // URL absolut actualizat
         width: 1200,
         height: 630,
         alt: "Testimoniale și Rezultate - Casa di Marianna",
@@ -60,8 +60,8 @@ export default function TestimonialePage() {
     {
       id: 1,
       name: "Andreea M.",
-      beforeImage: "/placeholder.svg?height=400&width=300&text=Inainte",
-      afterImage: "/placeholder.svg?height=400&width=300&text=Dupa",
+      beforeImage: "/placeholder.svg?height=300&width=200&text=Inainte",
+      afterImage: "/placeholder.svg?height=300&width=200&text=Dupa",
       weightLoss: "15 kg",
       duration: "3 luni",
       story:
@@ -70,8 +70,8 @@ export default function TestimonialePage() {
     {
       id: 3,
       name: "Natalia P.",
-      beforeImage: "/placeholder.svg?height=400&width=300&text=Inainte",
-      afterImage: "/placeholder.svg?height=400&width=300&text=Dupa",
+      beforeImage: "/placeholder.svg?height=300&width=200&text=Inainte",
+      afterImage: "/placeholder.svg?height=300&width=200&text=Dupa",
       weightLoss: "12 kg",
       duration: "3 luni",
       story:

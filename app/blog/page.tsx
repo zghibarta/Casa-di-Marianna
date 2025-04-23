@@ -5,8 +5,7 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Blog & Sfaturi utile | Casa di Marianna",
-  description:
-    "Articole informative și sfaturi practice despre nutriție, slăbire și un stil de viață sănătos.",
+  description: "Articole informative și sfaturi practice despre nutriție, slăbire și un stil de viață sănătos.",
   keywords: "blog nutriție, sfaturi slăbire, alimentație sănătoasă, stil de viață sănătos, Casa di Marianna, Chișinău",
   alternates: {
     canonical: "/blog",
@@ -18,7 +17,7 @@ export const metadata: Metadata = {
     siteName: "Casa di Marianna",
     images: [
       {
-        url: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/blog/blog_mituri.jpg",
+        url: "https://casadimarianna.com/images/blog/blog_mituri.jpg",
         width: 1200,
         height: 630,
         alt: "Blog & Sfaturi utile - Casa di Marianna",
@@ -41,7 +40,7 @@ const articles = [
     id: 1,
     title: "5 Mituri despre slăbire demontate de specialiști",
     excerpt: "Descoperă adevărul din spatele celor mai comune mituri despre slăbire și alimentație sănătoasă.",
-    image: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/blog/blog_mituri.jpg",
+    image: "/images/blog/blog_mituri.jpg",
     date: "15 Martie 2024",
     author: "Mariana Curagău-Zghibarța, nutriționist certificat",
     category: "Slăbire",
@@ -51,7 +50,7 @@ const articles = [
     id: 2,
     title: "Cum să menții rezultatele după slăbire",
     excerpt: "Strategii eficiente pentru menținerea greutății ideale după finalizarea unui program de slăbire.",
-    image: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/blog/blog_mentinere.jpg",
+    image: "/images/blog/blog_mentinere.jpg",
     date: "2 Aprilie 2024",
     author: "Mariana Curagău-Zghibarța, nutriționist certificat",
     category: "Slăbire",
@@ -61,7 +60,7 @@ const articles = [
     id: 3,
     title: "Rolul hidratării în procesul de slăbire",
     excerpt: "Află cum consumul adecvat de apă poate accelera metabolismul și contribui la pierderea în greutate.",
-    image: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/blog/blog_hidratare.jpg",
+    image: "/images/blog/blog_hidratare.jpg",
     date: "20 Aprilie 2024",
     author: "Mariana Curagău-Zghibarța, nutriționist certificat",
     category: "Nutriție",
@@ -71,7 +70,7 @@ const articles = [
     id: 4,
     title: "Beneficiile procedurilor de remodelare corporală",
     excerpt: "Descoperă cum procedurile moderne de remodelare corporală pot accelera procesul de slăbire.",
-    image: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/blog/blog_remodelare.jpg",
+    image: "/images/blog/blog_remodelare.jpg",
     date: "5 Mai 2024",
     author: "Mariana Curagău-Zghibarța, nutriționist certificat",
     category: "Proceduri",
@@ -81,7 +80,7 @@ const articles = [
     id: 5,
     title: "Mindful Eating: cheia unei relații sănătoase cu mâncarea",
     excerpt: "Învață cum să practici alimentația conștientă pentru a-ți îmbunătăți obiceiurile alimentare.",
-    image: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/blog/blog_mindful.jpg",
+    image: "/images/blog/blog_mindful.jpg",
     date: "12 Mai 2024",
     author: "Mariana Curagău-Zghibarța, nutriționist certificat",
     category: "Psihologie",
@@ -91,7 +90,7 @@ const articles = [
     id: 6,
     title: "Rețete sănătoase pentru micul dejun",
     excerpt: "Colecție de rețete rapide și nutritive pentru diferite mese ale zilei.",
-    image: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/blog/blog_breakfast.jpg",
+    image: "/images/blog/blog_breakfast.jpg",
     date: "18 Mai 2024",
     author: "Mariana Curagău-Zghibarța, nutriționist certificat",
     category: "Rețete sănătoase",

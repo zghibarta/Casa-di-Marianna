@@ -3,8 +3,7 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Contactează-ne | Casa di Marianna",
-  description:
-    "Contactează echipa Casa di Marianna pentru programări, întrebări sau informații suplimentare.",
+  description: "Contactează echipa Casa di Marianna pentru programări, întrebări sau informații suplimentare.",
   keywords: "contact Casa di Marianna, programare consultație, adresă centru slăbire, telefon nutriționist, Chișinău",
   alternates: {
     canonical: "/contact",
@@ -16,7 +15,7 @@ export const metadata: Metadata = {
     siteName: "Casa di Marianna",
     images: [
       {
-        url: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/og-image.jpg",
+        url: "https://casadimarianna.com/images/og-image.jpg",
         width: 1024,
         height: 536,
         alt: "Contactează-ne - Casa di Marianna",

@@ -5,8 +5,7 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Programe transformaționale | Casa di Marianna",
-  description:
-    "Transformare autentică prin consiliere psihologică, echilibru nutrițional și remodelare corporală",
+  description: "Transformare autentică prin consiliere psihologică, echilibru nutrițional și remodelare corporală",
   keywords:
     "proceduri slăbire, consultații nutriționale, consiliere psihologică, produse naturale, Casa di Marianna, Chișinău",
   alternates: {
@@ -14,13 +13,12 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Programe transformaționale | Casa di Marianna",
-    description:
-      "Transformare autentică prin consiliere psihologică, echilibru nutrițional și remodelare corporală",
+    description: "Transformare autentică prin consiliere psihologică, echilibru nutrițional și remodelare corporală",
     url: "https://casadimarianna.com/servicii",
     siteName: "Casa di Marianna",
     images: [
       {
-        url: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/og-image_.jpg",
+        url: "https://casadimarianna.com/images/og-image_.jpg",
         width: 588,
         height: 320,
         alt: "Transformare la Casa di Marianna",
@@ -36,7 +34,7 @@ export default function ServiciiPage() {
       title: "Consiliere psihologică",
       description:
         "Totul începe cu tine: echilibru interior, obiceiuri noi, viață conștientă și grijă pentru sănătatea ta",
-      image: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/psihoterapie.jpg",
+      image: "/images/psihoterapie.jpg",
       details: [
         "De la echilibru interior la o imagine corporală în armonie",
         "Identificarea și depășirea blocajelor emoționale",
@@ -50,7 +48,7 @@ export default function ServiciiPage() {
       title: "Consultații nutriționale",
       description:
         "Planuri alimentare personalizate în funcție de obiectivele, preferințele și nevoile tale specifice.",
-      image: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/nutritie.jpg",
+      image: "/images/nutritie.jpg",
       details: [
         "Evaluare nutrițională completă",
         "Analiză a compoziției corporale",
@@ -63,7 +61,7 @@ export default function ServiciiPage() {
       id: "proceduri",
       title: "Proceduri remodelarea corpului",
       description: "Tehnologii avansate și tratamente pentru reducerea grăsimii localizate și modelarea corpului.",
-      image: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/proceduri.jpg",
+      image: "/images/proceduri.jpg",
       details: [
         "Tehnici speciale de masaj anticelulitic",
         "Masaj de relaxare și modelare corporală",
@@ -75,19 +73,22 @@ export default function ServiciiPage() {
     {
       id: "produse",
       title: "Produse premiate la nivel mondial",
-      description: "Gama completă de produse naturale pentru controlul greutății, îmbunătățirea digestiei și îngrijire personală.",
-      image: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/forever.jpg",
+      description:
+        "Gama completă de produse naturale pentru controlul greutății, îmbunătățirea digestiei și îngrijire personală.",
+      image: "/images/forever.jpg",
       details: [
         "Vitamine/minerale pentru o viață sănătoasă",
         "Băuturi nutritive și snake-uri proteice - nutriție avansată",
         "Produse pentru detoxifiere și curățare internă",
-        "Produse apicole pentru hrana corpului și minții",                
-        "Îngrijire personală cu Aloe vera - arată și te simte minunat",        
+        "Produse apicole pentru hrana corpului și minții",
+        "Îngrijire personală cu Aloe vera - arată și te simte minunat",
         <Link
+          key="promo"
           href="https://thealoeveraco.shop/5VHS0OoI"
-          className="inline-flex items-center text-[#ff0000] font-medium hover:text-[#8EB5D9]">
+          className="inline-flex items-center text-[#ff0000] font-medium hover:text-[#8EB5D9]"
+        >
           ! PROMOȚIE -15% sau contactează-ne pentru o reducere personală !
-        </Link>,        
+        </Link>,
       ],
     },
   ]
@@ -99,7 +100,8 @@ export default function ServiciiPage() {
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="mb-6">Serviciile noastre complete</h1>
             <p className="text-lg md:text-xl text-gray-700 mb-8">
-              Descoperă cât de simplu poate fi să ai un corp sănătos și plin de energie! Programul nostru "Slăbește cu mine" redefinește conceptul de slăbire sănătoasă și echilibrată.
+              Descoperă cât de simplu poate fi să ai un corp sănătos și plin de energie! Programul nostru "Slăbește cu
+              mine" redefinește conceptul de slăbire sănătoasă și echilibrată.
             </p>
           </div>
         </div>

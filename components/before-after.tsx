@@ -6,20 +6,22 @@ export default function BeforeAfterSection() {
     {
       id: 1,
       name: "Andreea M.",
-      beforeImage: "/placeholder.svg?height=400&width=300&text=Inainte",
-      afterImage: "/placeholder.svg?height=400&width=300&text=Dupa",
+      beforeImage: "/placeholder.svg?height=300&width=200&text=Inainte",
+      afterImage: "/placeholder.svg?height=300&width=200&text=Dupa",
       weightLoss: "15 kg",
       duration: "3 luni",
-      feedback: "Am încercat numeroase diete înainte, dar niciuna nu a funcționat pe termen lung. Cu programul 'Slăbește cu mine' am învățat să mănânc sănătos și să-mi schimb stilul de viață. Procedurile de masaj cu împachetări au accelerat procesul și m-au ajutat să scap de zonele problematice. Sunt recunoscătoare Marianei pentru tot sprijinul!",
+      feedback:
+        "Am încercat numeroase diete înainte, dar niciuna nu a funcționat pe termen lung. Cu programul 'Slăbește cu mine' am învățat să mănânc sănătos și să-mi schimb stilul de viață. Procedurile de masaj cu împachetări au accelerat procesul și m-au ajutat să scap de zonele problematice. Sunt recunoscătoare Marianei pentru tot sprijinul!",
     },
     {
       id: 2,
       name: "Natalia P.",
-      beforeImage: "/placeholder.svg?height=400&width=300&text=Inainte",
-      afterImage: "/placeholder.svg?height=400&width=300&text=Dupa",
+      beforeImage: "/placeholder.svg?height=300&width=200&text=Inainte",
+      afterImage: "/placeholder.svg?height=300&width=200&text=Dupa",
       weightLoss: "12 kg",
       duration: "3 luni",
-      feedback: "După sarcină, am avut dificultăți în a reveni la greutatea anterioară. Marianna m-a ajutat să slăbesc într-un mod sănătos, fără să-mi afectez alăptarea. Consilierea psihologică a fost esențială pentru mine. Acum mă simt încrezătoare și plină de energie.",
+      feedback:
+        "După sarcină, am avut dificultăți în a reveni la greutatea anterioară. Marianna m-a ajutat să slăbesc într-un mod sănătos, fără să-mi afectez alăptarea. Consilierea psihologică a fost esențială pentru mine. Acum mă simt încrezătoare și plină de energie.",
     },
   ]
 
@@ -72,9 +74,7 @@ export default function BeforeAfterSection() {
                     <span className="text-gray-600">durată program</span>
                   </div>
                 </div>
-                <p className="text-gray-600">
-                  {item.feedback}
-                </p>
+                <p className="text-gray-600">{item.feedback}</p>
               </div>
             </div>
           ))}

@@ -1,7 +1,5 @@
 import Link from "next/link"
-import Image from "next/image"
 import OptimizedImage from "./optimized-image"
-// ... restul importurilor
 
 export default function HeroSection() {
   return (
@@ -12,7 +10,8 @@ export default function HeroSection() {
             Transformă-ți sufletul și corpul la <span className="text-primary">Casa di Marianna</span>
           </h1>
           <p className="text-lg md:text-xl text-foreground max-w-lg">
-            Alege un stil de viață sănătos și durabil prin consiliere psihologică, asistență nutrițională și remodelare corporală.
+            Alege un stil de viață sănătos și durabil prin consiliere psihologică, asistență nutrițională și remodelare
+            corporală.
           </p>
           <div className="flex flex-wrap gap-4">
             <Link href="/contact" className="btn-primary">
@@ -40,7 +39,7 @@ export default function HeroSection() {
 
         <div className="relative h-[400px] md:h-[500px] lg:h-[500px]">
           <OptimizedImage
-            src="https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/hero-image.jpg"
+            src="/images/hero-image.jpg"
             alt="Prezentare Casa di Marianna"
             fill
             className="object-cover rounded-lg shadow-xl"
@@ -68,7 +67,8 @@ export default function HeroSection() {
               <span className="font-bold">Rezultate garantate</span>
             </div>
             <p className="text-sm text-foreground">
-              Programul "Slăbește cu mine" - cel mai renumit și inedit proiect al nostru (vedeți recenzii pe social media).
+              Programul "Slăbește cu mine" - cel mai renumit și inedit proiect al nostru (vedeți recenzii pe social
+              media).
             </p>
           </div>
         </div>

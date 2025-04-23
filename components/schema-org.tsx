@@ -4,10 +4,9 @@ export default function SchemaOrg() {
     "@type": "HealthAndBeautyBusiness",
     name: "Casa di Marianna",
     url: "https://casadimarianna.com",
-    logo: "https://casadimarianna.com/logo.svg",
-    image: "https://casadimarianna.com/og-image.jpg",
-    description:
-      "Transformare unică prin consiliere psihologică, asistență nutrițională și remodelare corporală.",
+    logo: "https://casadimarianna.com/images/logo.svg", // URL absolut actualizat
+    image: "https://casadimarianna.com/images/og-image.jpg", // URL absolut actualizat
+    description: "Transformare unică prin consiliere psihologică, asistență nutrițională și remodelare corporală.",
     address: {
       "@type": "PostalAddress",
       streetAddress: "Str. Braniștii 7/1",
@@ -22,7 +21,7 @@ export default function SchemaOrg() {
     telephone: "+373 79668884",
     email: "info@casadimarianna.com",
     openingHours: "Mo-Fr 09:00-18:00",
-    priceRange: "$$",
+    priceRange: "$",
     sameAs: ["https://facebook.com/casadimarianna", "https://instagram.com/casadimarianna"],
     offers: {
       "@type": "AggregateOffer",

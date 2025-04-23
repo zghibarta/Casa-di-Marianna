@@ -16,7 +16,7 @@ export default function Header() {
         {/* Modifică logo-ul și textul */}
         <Link href="/" className="flex items-center space-x-2">
           <Image
-            src="https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/logo-image.jpg" // Înlocuiește cu calea reală către logo-ul tău
+            src="/images/logo-image.jpg" // Înlocuiește cu calea reală către logo-ul tău
             alt=""
             width={40}
             height={40}

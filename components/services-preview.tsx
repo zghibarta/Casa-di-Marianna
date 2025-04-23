@@ -9,7 +9,7 @@ export default function ServicesPreview() {
       title: "Consiliere psihologică",
       description:
         "Totul începe cu tine: echilibru interior, obiceiuri noi, viață conștientă și grijă pentru sănătatea ta.",
-      image: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/psihoterapie.jpg",
+      image: "/images/psihoterapie.jpg",
       link: "/servicii#consiliere",
     },
     {
@@ -17,7 +17,7 @@ export default function ServicesPreview() {
       title: "Consultații nutriționale",
       description:
         "Planuri alimentare personalizate în funcție de obiectivele, preferințele și nevoile tale specifice.",
-      image: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/nutritie.jpg",
+      image: "/images/nutritie.jpg",
       link: "/servicii#nutritie",
     },
     {
@@ -25,14 +25,15 @@ export default function ServicesPreview() {
       title: "Proceduri remodelarea corpului",
       description:
         "Tehnologii avansate și tratamente non-invazive pentru reducerea grăsimii localizate și modelarea corpului.",
-      image: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/proceduri.jpg",
+      image: "/images/proceduri.jpg",
       link: "/servicii#proceduri",
     },
     {
       id: "produse",
       title: "Produse premiate la nivel mondial",
-      description: "Gama completă de produse naturale pentru controlul greutății, îmbunătățirea digestiei și îngrijire personală.",
-      image: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/forever.jpg",
+      description:
+        "Gama completă de produse naturale pentru controlul greutății, îmbunătățirea digestiei și îngrijire personală.",
+      image: "/images/forever.jpg",
       link: "/servicii#produse",
     },
   ]

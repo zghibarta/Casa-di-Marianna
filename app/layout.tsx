@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     siteName: "Casa di Marianna",
     images: [
       {
-        url: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/og-image_.jpg",
+        url: "https://casadimarianna.com/images/og-image_.jpg",
         width: 1024,
         height: 536,
         alt: "Casa di Marianna - Programe Transformaționale",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Programe Transformaționale | Casa di Marianna",
     description: "Transformare autentică prin consiliere psihologică și echilibru nutrițional",
-    images: ["https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/og-image.jpg"],
+    images: ["https://casadimarianna.com/images/og-image.jpg"],
   },
   robots: {
     index: true,
@@ -89,11 +89,7 @@ export default function RootLayout({
             `,
           }}
         />
-        <link
-          rel="icon"
-          href="https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/favicon.png"
-          type="image/x-icon"
-        ></link>
+        <link rel="icon" href="/images/favicon.png" type="image/x-icon"></link>
       </head>
       <body className={inter.className}>
         <Suspense fallback={<div className="p-4">Se încarcă...</div>}>

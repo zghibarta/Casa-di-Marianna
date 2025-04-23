@@ -33,7 +33,8 @@ export default function BenefitsSection() {
             De ce să alegi <span className="text-primary">Casa di Marianna</span>?
           </h2>
           <p className="text-foreground text-lg">
-            Descoperă beneficiile programelor noastre transformaționale. La sigur ai auzit de "Slăbește cu mine", senzație absolută, recunoscut de toți drept cel mai apreciat și revoluționar proiect de slăbire.
+            Descoperă beneficiile programelor noastre transformaționale. La sigur ai auzit de "Slăbește cu mine",
+            senzație absolută, recunoscut de toți drept cel mai apreciat și revoluționar proiect de slăbire.
           </p>
         </div>
 

@@ -4,8 +4,7 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Întrebări frecvente | Casa di Marianna",
-  description:
-    "Găsește răspunsuri la cele mai comune întrebări despre programele și serviciile noastre.",
+  description: "Găsește răspunsuri la cele mai comune întrebări despre programele și serviciile noastre.",
   keywords: "întrebări frecvente slăbire, FAQ nutriție, întrebări proceduri, Casa di Marianna, Chișinău",
   alternates: {
     canonical: "/faq",
@@ -17,7 +16,7 @@ export const metadata: Metadata = {
     siteName: "Casa di Marianna",
     images: [
       {
-        url: "https://nlcdtzvmqbp9oufz.public.blob.vercel-storage.com/og-image.jpg",
+        url: "https://casadimarianna.com/images/og-image.jpg",
         width: 1024,
         height: 536,
         alt: "Întrebări frecvente - Casa di Marianna",
