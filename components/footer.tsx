@@ -58,11 +58,6 @@ export default function Footer() {
                   FAQ
                 </Link>
               </li>
-              <li>
-                <Link href="/contact" className="text-foreground hover:text-primary">
-                  Contact
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -70,8 +65,8 @@ export default function Footer() {
             <h3 className="text-lg font-bold mb-4">Servicii</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/servicii#proceduri" className="text-foreground hover:text-primary">
-                  Proceduri de slăbire
+                <Link href="/servicii#consiliere" className="text-foreground hover:text-primary">
+                  Consiliere psihologică
                 </Link>
               </li>
               <li>
@@ -80,8 +75,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/servicii#consiliere" className="text-foreground hover:text-primary">
-                  Consiliere psihologică
+                <Link href="/servicii#proceduri" className="text-foreground hover:text-primary">
+                  Proceduri de slăbire
                 </Link>
               </li>
               <li>
