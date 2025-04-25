@@ -111,7 +111,7 @@ export default function FaqPage() {
 
   return (
     <>
-      <section className="bg-gradient-to-r from-primary/20 to-secondary/20 py-8 md:py-12">
+      <section className="bg-gradient-to-r from-primary/20 to-secondary/20 py-6 md:py-10">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="mb-6">Întrebări frecvente</h2>
@@ -126,7 +126,7 @@ export default function FaqPage() {
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
             {faqs.map((category, index) => (
-              <div key={index} className="mb-12">
+              <div key={index} className="mb-6">
                 <h2 className="text-2xl font-bold mb-6">{category.category}</h2>
                 <Accordion type="single" collapsible className="space-y-4">
                   {category.questions.map((faq, faqIndex) => (
@@ -142,7 +142,7 @@ export default function FaqPage() {
 
           <div className="max-w-2xl mx-auto mt-16 text-center">
             <h3 className="text-2xl font-bold mb-4">Nu ai găsit răspunsul căutat?</h3>
-            <p className="text-gray-600 mb-8">
+            <p className="text-gray-600 mb-4">
               Contactează-ne și îți vom răspunde la toate întrebările. Suntem aici să te ajutăm!
             </p>
             <Link href="/contact" className="btn-primary">

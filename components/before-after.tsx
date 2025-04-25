@@ -28,7 +28,7 @@ export default function BeforeAfterSection() {
   return (
     <section className="section-padding bg-[#A7C7E7]/10">
       <div className="container-custom">
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        <div className="text-center max-w-3xl mx-auto mb-6">
           <h2 className="mb-4">Transformări reale</h2>
           <p className="text-gray-600 text-lg">
             Rezultate autentice ale clienților noștri care au urmat programele Casa di Marianna.

@@ -81,11 +81,11 @@ export default function TestimonialePage() {
 
   return (
     <>
-      <section className="bg-gradient-to-r from-[#A7C7E7]/20 to-[#B2BEB5]/20 py-8 md:py-12">
+      <section className="bg-gradient-to-r from-[#A7C7E7]/20 to-[#B2BEB5]/20 py-6 md:py-10">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="mb-6">Testimoniale și rezultate</h2>
-            <p className="text-lg md:text-xl text-gray-700 mb-8">
+            <p className="text-lg md:text-xl text-gray-700 ">
               Descoperă poveștile de succes ale clienților care și-au transformat viața cu ajutorul programelor Casa di
               Marianna.
             </p>
@@ -95,7 +95,7 @@ export default function TestimonialePage() {
 
       <section className="py-8 bg-white">
         <div className="container-custom">
-          <h2 className="text-2xl font-bold mb-12 text-center">Ce spun clienții noștri</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center">Ce spun clienții noștri</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {testimonials.map((testimonial) => (
@@ -136,7 +136,7 @@ export default function TestimonialePage() {
 
       <section id="transformari" className="py-8 bg-[#A7C7E7]/10">
         <div className="container-custom">
-          <h2 className="text-2xl font-bold mb-12 text-center">Transformări reale</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center">Transformări reale</h2>
 
           <div className="space-y-16">
             {transformations.map((item) => (

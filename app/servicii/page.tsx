@@ -95,11 +95,11 @@ export default function ServiciiPage() {
 
   return (
     <>
-      <section className="bg-gradient-to-r from-[#A7C7E7]/20 to-[#B2BEB5]/20 py-8 md:py-12">
+      <section className="bg-gradient-to-r from-[#A7C7E7]/20 to-[#B2BEB5]/20 py-6 md:py-10">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="mb-6">Serviciile noastre complete</h2>
-            <p className="text-lg md:text-xl text-gray-700 mb-8">
+            <p className="text-lg md:text-xl text-gray-700 ">
               Descoperă cât de simplu poate fi să ai un corp sănătos și plin de energie! Programul nostru "Slăbește cu
               mine" redefinește conceptul de sănătate.
             </p>
@@ -140,7 +140,7 @@ export default function ServiciiPage() {
       <section className="py-8 bg-[#A7C7E7]/10">
         <div className="container-custom text-center">
           <h2 className="text-2xl font-bold mb-6">Abordarea noastră holistică</h2>
-          <p className="text-lg max-w-3xl mx-auto mb-12">
+          <p className="text-lg max-w-3xl mx-auto mb-6">
             La Casa di Marianna, credem că succesul pe termen lung în procesul de slăbire necesită o abordare integrată
             care să adreseze toate aspectele sănătății tale.
           </p>
@@ -223,7 +223,7 @@ export default function ServiciiPage() {
 
       <section className="py-8 bg-white">
         <div className="container-custom">
-          <div className="max-w-3xl mx-auto text-center mb-12">
+          <div className="max-w-3xl mx-auto text-center mb-6">
             <h2 className="text-2xl font-bold mb-4">Pachetele noastre</h2>
             <p className="text-lg text-gray-700">
               Alege pachetul care se potrivește cel mai bine nevoilor și obiectivelor tale.

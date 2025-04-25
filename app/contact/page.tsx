@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <>
-      <section className="bg-gradient-to-r from-primary/20 to-secondary/20 py-8 md:py-12">
+      <section className="bg-gradient-to-r from-primary/20 to-secondary/20 py-6 md:py-10">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="mb-6">Hai să găsim soluții împreună!</h2>
@@ -38,7 +38,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="pt-10 pb-10 bg-white">
+      <section className="pt-2 pb-2 bg-white">
         <div className="container-custom">
           <ContactForm />
         </div>

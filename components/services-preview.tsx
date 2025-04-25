@@ -41,7 +41,7 @@ export default function ServicesPreview() {
   return (
     <section className="section-padding bg-gray-50">
       <div className="container-custom">
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        <div className="text-center max-w-3xl mx-auto mb-6">
           <h2 className="mb-4">Serviciile noastre complete</h2>
           <p className="text-gray-600 text-lg">
             Oferim o gamă completă de servicii pentru a te ajuta să îți atingi obiectivele de slăbire și să menții un

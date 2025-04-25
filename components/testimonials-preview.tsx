@@ -29,7 +29,7 @@ export default function TestimonialsPreview() {
   return (
     <section className="section-padding bg-white">
       <div className="container-custom">
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        <div className="text-center max-w-3xl mx-auto mb-6">
           <h2 className="mb-4">Ce spun clienții noștri</h2>
           <p className="text-gray-600 text-lg">
             Descoperă rezultatele de succes ale clienților care și-au transformat viața cu ajutorul programelor Casa di

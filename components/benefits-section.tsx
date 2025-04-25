@@ -28,7 +28,7 @@ export default function BenefitsSection() {
   return (
     <section className="section-padding bg-white">
       <div className="container-custom">
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        <div className="text-center max-w-3xl mx-auto mb-6">
           <h2 className="mb-4">
             De ce să alegi <span className="text-primary">Casa di Marianna</span>?
           </h2>

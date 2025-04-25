@@ -101,7 +101,7 @@ const articles = [
 export default function BlogPage() {
   return (
     <>
-      <section className="bg-gradient-to-r from-primary/20 to-secondary/20 py-8 md:py-12">
+      <section className="bg-gradient-to-r from-primary/20 to-secondary/20 py-6 md:py-10">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="mb-6">Blog & Sfaturi Utile</h2>
