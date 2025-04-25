@@ -84,7 +84,7 @@ export default function ContactForm() {
       <div className="container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div>
-            <h2 className="text-3xl font-bold mb-6">Contactează-ne</h2>
+            <h2 className="text-2xl font-bold mb-6">Contactează-ne</h2>
             <p className="text-gray-600 mb-8">
               Suntem aici pentru a răspunde întrebărilor tale și pentru a te ajuta să începi călătoria către un corp
               sănătos și o viață echilibrată.

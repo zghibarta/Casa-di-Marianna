@@ -114,7 +114,7 @@ export default function FaqPage() {
       <section className="bg-gradient-to-r from-primary/20 to-secondary/20 py-8 md:py-12">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="mb-6">Întrebări frecvente</h1>
+            <h2 className="mb-6">Întrebări frecvente</h1>
             <p className="text-lg md:text-xl text-gray-700">
               Găsește răspunsuri la cele mai comune întrebări despre programele și serviciile noastre.
             </p>

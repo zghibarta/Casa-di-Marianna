@@ -104,19 +104,10 @@ export default function BlogPage() {
       <section className="bg-gradient-to-r from-primary/20 to-secondary/20 py-8 md:py-12">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="mb-6">Blog & Sfaturi Utile</h1>
+            <h2 className="mb-6">Blog & Sfaturi Utile</h1>
             <p className="text-lg md:text-xl text-gray-700">
               Articole informative și sfaturi practice despre nutriție, slăbire și un stil de viață sănătos.
             </p>
-
-            <div className="mt-8 relative max-w-xl mx-auto">
-              <input
-                type="search"
-                placeholder="Caută articole..."
-                className="w-full px-4 py-3 pl-12 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50"
-              />
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-            </div>
           </div>
         </div>
       </section>

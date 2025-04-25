@@ -6,8 +6,10 @@ export default function HeroSection() {
     <section className="relative bg-gradient-to-r from-secondary/50 to-primary/10 overflow-hidden">
       <div className="container-custom grid md:grid-cols-2 gap-8 items-center min-h-[80vh] py-8">
         <div className="space-y-6 z-10">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-            Transformă-ți sufletul și corpul la <span className="text-primary">Casa di Marianna</span>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+            Transformă-ți <br />
+            sufletul și corpul <br />
+            <span className="text-primary">Casa di Marianna</span>
           </h1>
           <p className="text-lg md:text-xl text-foreground max-w-lg">
             Alege un stil de viață sănătos și durabil prin consiliere psihologică, asistență nutrițională și remodelare
