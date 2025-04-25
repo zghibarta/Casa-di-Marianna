@@ -30,7 +30,7 @@ export default function ContactPage() {
       <section className="bg-gradient-to-r from-primary/20 to-secondary/20 py-8 md:py-12">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="mb-6">Hai să găsim soluții împreună!</h1>
+            <h2 className="mb-6">Hai să găsim soluții împreună!</h2>
             <p className="text-lg md:text-xl text-gray-700">
               Te ajutăm cu orice întrebări și te ghidăm spre un stil de viață sănătos și echilibrat.
             </p>

@@ -98,7 +98,7 @@ export default function ServiciiPage() {
       <section className="bg-gradient-to-r from-[#A7C7E7]/20 to-[#B2BEB5]/20 py-8 md:py-12">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="mb-6">Serviciile noastre complete</h1>
+            <h2 className="mb-6">Serviciile noastre complete</h2>
             <p className="text-lg md:text-xl text-gray-700 mb-8">
               Descoperă cât de simplu poate fi să ai un corp sănătos și plin de energie! Programul nostru "Slăbește cu
               mine" redefinește conceptul de sănătate.

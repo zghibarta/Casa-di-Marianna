@@ -65,7 +65,7 @@ export default function BlogPost() {
             Înapoi la Blog
           </Link>
 
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">{article.title}</h1>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">{article.title}</h2>
 
           <div className="flex items-center text-sm text-gray-500 space-x-4">
             <div className="flex items-center">

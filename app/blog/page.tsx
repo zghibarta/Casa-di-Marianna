@@ -104,7 +104,7 @@ export default function BlogPage() {
       <section className="bg-gradient-to-r from-primary/20 to-secondary/20 py-8 md:py-12">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="mb-6">Blog & Sfaturi Utile</h1>
+            <h2 className="mb-6">Blog & Sfaturi Utile</h2>
             <p className="text-lg md:text-xl text-gray-700">
               Articole informative și sfaturi practice despre nutriție, slăbire și un stil de viață sănătos.
             </p>
