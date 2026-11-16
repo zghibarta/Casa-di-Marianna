@@ -124,7 +124,7 @@ describe("structura interviului scurt", () => {
   })
 
   it("primul ecran anunță durata, iar informarea arată adresa doar din configurare", () => {
-    expect(UI.durata).toBe("Durează aproximativ 5-7 minute.")
+    expect(UI.durata).toBe("Durează doar câteva minute.")
     expect(textInformare("adresa@example.com")).toContain("Casa di Marianna (adresa@example.com), la care")
     expect(textInformare()).toContain("Casa di Marianna, la care")
     // repo public: nicio adresă de email scrisă în texte
