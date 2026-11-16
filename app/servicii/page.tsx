@@ -107,7 +107,7 @@ export default function ServiciiPage() {
               <Link href="/evaluare" className="btn-primary">
                 Fă evaluarea nutrițională
               </Link>
-              <p className="text-sm text-gray-600">Câteva întrebări, aproximativ 5-7 minute, înainte de consultație.</p>
+              <p className="text-sm text-gray-600">Durează doar câteva minute și ne ajută să pregătim consultația pentru tine.</p>
             </div>
           </div>
         </div>
