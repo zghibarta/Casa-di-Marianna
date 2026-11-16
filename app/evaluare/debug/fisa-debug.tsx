@@ -18,6 +18,7 @@ import { exempluPentru } from "@/lib/evaluare/interviu/exemplu"
 import { construiesteIntrare, randuriFisa } from "@/lib/evaluare/interviu/mapare"
 import { parseazaNumar } from "@/lib/evaluare/interviu/raspunsuri"
 import { construiesteRezumat, verificaRezumat } from "@/lib/evaluare/interviu/rezumat"
+import { proceseazaCerere } from "@/lib/evaluare/trimitere/cerere"
 import type { IntrareCalcul, Masuratori, RezultatCalcul, Sex } from "@/lib/evaluare/tipuri"
 import { useEvaluare } from "../_components/stare"
 
@@ -158,6 +159,14 @@ export function FisaDebug() {
 
   const rezumat = dinInterviu ? construiesteRezumat(stare.raspunsuri, CONFIG_IMPLICIT) : []
   const problemeRezumat = dinInterviu ? verificaRezumat(rezumat) : []
+  // Aceeași funcție pe care o rulează serverul la „Trimite”; aici doar compune textul.
+  const cerere = dinInterviu
+    ? proceseazaCerere(
+        { tip: "evaluare", consimtamant: true, raspunsuri: stare.raspunsuri, website: "" },
+        CONFIG_IMPLICIT,
+        new Date(),
+      )
+    : null
 
   const incarcaExemplu = () => {
     // Exemplul variantei de interviu active; interviul rămâne deschis la primul pas, netrimis.
@@ -317,6 +326,26 @@ export function FisaDebug() {
               Verificare fără cifre:{" "}
               {problemeRezumat.length === 0 ? "trece" : `respins (${problemeRezumat.join(" ")})`}
             </p>
+          </section>
+
+          <section className="space-y-3 rounded-lg border p-4">
+            <h2 className="text-lg font-semibold md:text-xl">Emailul care ar pleca la „Trimite”</h2>
+            {cerere?.stare === "trimite" ? (
+              <>
+                <p className="text-sm">
+                  Subiect: <strong>{cerere.email.subiect}</strong>
+                </p>
+                <pre className="overflow-x-auto whitespace-pre-wrap rounded-md bg-muted p-3 text-xs leading-relaxed">
+                  {cerere.email.text}
+                </pre>
+              </>
+            ) : (
+              <p className="text-sm">
+                Nu s-ar trimite nimic: <code>{cerere?.stare === "refuz" ? cerere.cod : cerere?.stare}</code>
+                {cerere?.stare === "refuz" && cerere.oprire ? ` (${cerere.oprire})` : ""}. Răspunsurile incomplete și
+                opririle de siguranță nu produc niciun email.
+              </p>
+            )}
           </section>
 
           <section className="space-y-3 rounded-lg border p-4">
