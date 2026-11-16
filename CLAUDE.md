@@ -20,6 +20,13 @@ Specificația completă este în `docs/evaluare/plan.md`. Citește-o integral î
 
 Faza 2 (bază de date UE, panoul Marianei, autentificare) și Faza 3 (AI pe server) NU se fac acum.
 
+## Actualizare 16.11.2026 (înlocuiește punctele 3 și 4 de mai sus unde diferă)
+- **Interviul este scurt:** 10 ecrane, 5–10 minute (`interviu.varianta: "scurt"` în `config.ts`). Chestionarul complet din §3 rămâne implementat și testat, dar dezactivat; nu-l șterge.
+- **Fișa se trimite pe email:** la „Trimite”, `POST /api/evaluare` validează din nou, calculează și trimite prin SMTP (nodemailer). Tot fără bază de date, fără fișiere, fără API AI și fără răspunsuri în jurnale.
+- Adresele și datele SMTP vin doar din variabilele de mediu (`.env.example` are numele). Nicio adresă de email în cod, nici în texte: informarea afișează `EVALUARE_EMAIL_TO`.
+- La o oprire de siguranță nu se trimit răspunsurile; pot pleca doar numele și contactul.
+- Detalii în `docs/evaluare/DECIZII.md`, secțiunile 3 și 4.
+
 ## Reguli
 - Nu modifica paginile existente ale site-ului, cu excepția unui link discret spre `/evaluare` doar dacă ți se cere.
 - Repo-ul este PUBLIC: niciun secret, nicio cheie, nicio dată reală de clientă în cod sau în teste. Datele de test sunt cele anonime din `plan.md`.
