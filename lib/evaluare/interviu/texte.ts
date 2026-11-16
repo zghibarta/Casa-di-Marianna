@@ -453,7 +453,7 @@ export const UI = {
   titlu: "Evaluare nutrițională",
   bunVenit:
     "Bine ați venit! Înainte de consultația cu terapeutul integrativ de la Casa di Marianna, am vrea să vă cunoaștem puțin, ca timpul de la consultație să fie al dumneavoastră, nu al formularelor. Întrebăm doar ce este necesar pentru evaluarea inițială; restul îl veți discuta la consultație.",
-  durata: "Durează aproximativ 5-7 minute.",
+  durata: "Durează doar câteva minute.",
   pas: (pas: number, total: number) => `Pasul ${pas} din ${total}`,
 
   // ---- Consimțământul (ecranul 1). Bifa este nebifată implicit și obligatorie. ----
