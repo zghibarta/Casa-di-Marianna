@@ -53,13 +53,14 @@ export function CampIntrebare({ camp, valoare, eroare, onSchimba }: Props) {
           {...comune}
           value={sir}
           placeholder={text?.substituent}
+          className="bg-white"
           onChange={(e) => onSchimba(e.target.value)}
           autoComplete="off"
         />
       )
       break
     case "text_lung":
-      control = <Textarea {...comune} value={sir} rows={3} onChange={(e) => onSchimba(e.target.value)} />
+      control = <Textarea {...comune} value={sir} rows={3} className="bg-white" onChange={(e) => onSchimba(e.target.value)} />
       break
     case "numar":
       control = (
@@ -69,7 +70,7 @@ export function CampIntrebare({ camp, valoare, eroare, onSchimba }: Props) {
             value={sir}
             inputMode="decimal"
             autoComplete="off"
-            className="max-w-[10rem]"
+            className="max-w-[10rem] bg-white"
             onChange={(e) => onSchimba(e.target.value)}
           />
           {camp.unitate && <span className="text-muted-foreground">{camp.unitate}</span>}
@@ -84,7 +85,7 @@ export function CampIntrebare({ camp, valoare, eroare, onSchimba }: Props) {
           value={sir}
           min="1900-01-01"
           max={new Date().toISOString().slice(0, 10)}
-          className="max-w-[12rem]"
+          className="max-w-[12rem] bg-white"
           onChange={(e) => onSchimba(e.target.value)}
         />
       )
@@ -95,7 +96,7 @@ export function CampIntrebare({ camp, valoare, eroare, onSchimba }: Props) {
           {...comune}
           type="time"
           value={sir}
-          className="max-w-[9rem]"
+          className="max-w-[9rem] bg-white"
           onChange={(e) => onSchimba(e.target.value)}
         />
       )
@@ -178,13 +179,14 @@ export function CampIntrebare({ camp, valoare, eroare, onSchimba }: Props) {
                 aria-label={`Activitatea ${index + 1}`}
                 placeholder="Activitatea (de ex. mers pe jos)"
                 value={rand.tip}
-                className="sm:col-span-2"
+                className="bg-white sm:col-span-2"
                 onChange={(e) => schimbaRand(index, { tip: e.target.value })}
               />
               <Input
                 aria-label={`Activitatea ${index + 1}: de câte ori pe săptămână`}
                 placeholder="De câte ori pe săptămână"
                 inputMode="numeric"
+                className="bg-white"
                 value={rand.ori}
                 onChange={(e) => schimbaRand(index, { ori: e.target.value })}
               />
@@ -192,6 +194,7 @@ export function CampIntrebare({ camp, valoare, eroare, onSchimba }: Props) {
                 aria-label={`Activitatea ${index + 1}: durata în minute`}
                 placeholder="Durata (minute)"
                 inputMode="numeric"
+                className="bg-white"
                 value={rand.durata}
                 onChange={(e) => schimbaRand(index, { durata: e.target.value })}
               />
@@ -199,7 +202,7 @@ export function CampIntrebare({ camp, valoare, eroare, onSchimba }: Props) {
                 value={rand.intensitate}
                 onValueChange={(v) => schimbaRand(index, { intensitate: v as Intensitate })}
               >
-                <SelectTrigger aria-label={`Activitatea ${index + 1}: intensitatea`}>
+                <SelectTrigger className="bg-white" aria-label={`Activitatea ${index + 1}: intensitatea`}>
                   <SelectValue placeholder="Intensitatea" />
                 </SelectTrigger>
                 <SelectContent>

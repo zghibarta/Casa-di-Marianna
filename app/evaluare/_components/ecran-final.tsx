@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { CONFIG_IMPLICIT } from "@/lib/evaluare/config"
+import { pasiVizibili } from "@/lib/evaluare/interviu/graf"
 import { construiesteRezumat, verificaRezumat } from "@/lib/evaluare/interviu/rezumat"
 import { CANALE_PROGRAMARE, INTERVALE_PROGRAMARE, UI } from "@/lib/evaluare/interviu/texte"
 import { useEvaluare } from "./stare"
@@ -39,6 +40,7 @@ export function EcranFinal() {
   }, [stare.raspunsuri])
 
   const complet = intervale.length >= 2 && canal !== ""
+  const ultimulPas = pasiVizibili(stare.raspunsuri, config).at(-1)
 
   return (
     <div className="space-y-6">
@@ -123,7 +125,7 @@ export function EcranFinal() {
         </div>
       </div>
 
-      <Button variant="ghost" onClick={() => actualizeaza({ etapa: "interviu" })}>
+      <Button variant="ghost" onClick={() => actualizeaza({ etapa: "interviu", idPas: ultimulPas?.id ?? null })}>
         {UI.inapoi}
       </Button>
     </div>
