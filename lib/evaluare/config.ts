@@ -236,7 +236,7 @@ const INTERVIU_IMPLICIT: ConfigInterviu = {
   // Activă: fișa pleacă pe email la Casa di Marianna, fără bază de date. Adresa și datele SMTP
   // vin doar din variabilele de mediu (vezi .env.example). Pe false se revine la comportamentul
   // „nimic nu părăsește browserul”.
-  trimitereActiva: false,
+  trimitereActiva: true,
   versiuneConsimtamant: "scurt-v1",
 }
 

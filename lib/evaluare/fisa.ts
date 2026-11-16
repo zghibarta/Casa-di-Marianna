@@ -1,7 +1,8 @@
 // Rândurile de cifre ale fișei pentru Mariana, ca text. Aici se aplică rotunjirea de afișare.
-// Folosit de ecranul de debug; în Faza 2 îl va folosi panoul Marianei.
+// Folosit de fișa trimisă pe email și de ecranul de debug.
 
 import { fmtGrame, fmtIMC, fmtKcal, fmtKg, fmtMl, fmtNumar, fmtProcent } from "./afisare"
+import type { ConfigEvaluare } from "./config"
 import type { ClasaIMC, RezultatCalculat } from "./tipuri"
 
 export const ETICHETE_CLASA_IMC: Record<ClasaIMC, string> = {
@@ -60,7 +61,10 @@ export function randuriCalcul(rez: RezultatCalculat, precizieCompleta = false): 
     { eticheta: `RMB (${rez.rmb.varianta})`, valoare: kcal(rez.rmb.valoare) },
     {
       eticheta: "Coeficient de activitate",
-      valoare: `${fmtNumar(rez.activitate.coef, 3)} (${rez.activitate.sursa}: ${rez.activitate.explicatie})`,
+      valoare:
+        rez.activitate.sursa === "autoapreciere"
+          ? `${fmtNumar(rez.activitate.coef, 3)} (${rez.activitate.explicatie})`
+          : `${fmtNumar(rez.activitate.coef, 3)} (${rez.activitate.sursa}: ${rez.activitate.explicatie})`,
     },
     { eticheta: "Menținere", valoare: kcal(rez.mentinereKcal) },
     {
@@ -112,4 +116,24 @@ export function randuriCalcul(rez: RezultatCalculat, precizieCompleta = false): 
     { eticheta: "Versiunea configurării", valoare: rez.versiuneConfig },
   )
   return randuri
+}
+
+/**
+ * Valorile pe care calculul le-a luat din configurare sau din estimări, pentru că interviul nu
+ * le-a cerut (ori Mariana nu le-a introdus încă). Apar în fișă ca „de confirmat la consultație”.
+ */
+export function valoriDeConfirmat(rez: RezultatCalculat, config: ConfigEvaluare): string[] {
+  const note: string[] = []
+  if (rez.activitate.sursa !== "confirmat") {
+    note.push(`Coeficient de activitate ${fmtNumar(rez.activitate.coef, 3)} (${rez.activitate.explicatie}).`)
+  }
+  if (rez.indicatori.pgcNavy === null) {
+    note.push(
+      "Procent de grăsime corporală: estimat din IMC și vârstă (Deurenberg), pentru că lipsesc măsurătorile (gât, talie, șolduri).",
+    )
+  }
+  if (config.metoda.indicatoriTalie && rez.indicatori.talieInaltime === null) {
+    note.push("Talia și raportul talie/înălțime: necalculate, lipsește măsurarea taliei.")
+  }
+  return note
 }

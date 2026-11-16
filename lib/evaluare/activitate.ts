@@ -40,7 +40,7 @@ export function propuneCoeficient(profil: ProfilActivitate | undefined, metoda: 
       dinAutoapreciere: true,
       antrenamentePeSaptamana: 0,
       intensePeSaptamana: 0,
-      explicatie: `din autoapreciere („${NIVEL_AUTOAPRECIERE[profil.autoapreciere]}”), fără orarul antrenamentelor`,
+      explicatie: `din autoapreciere: „${NIVEL_AUTOAPRECIERE[profil.autoapreciere]}”, fără orarul antrenamentelor`,
     }
   }
   const antrenamente = profil?.autoapreciere === "pasiv" ? [] : (profil?.antrenamente ?? [])
