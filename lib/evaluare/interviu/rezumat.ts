@@ -9,13 +9,13 @@ import { oreDeSomn, antrenamenteDinRaspunsuri } from "./mapare"
 import { esteDa, lista, numar, text, type Raspunsuri } from "./raspunsuri"
 
 const FALLBACK_PUNCT_FORTE =
-  "Ați răspuns cu răbdare la toate întrebările, iar asta o ajută mult pe Mariana să vă cunoască înainte de întâlnire."
+  "Ați răspuns cu răbdare la toate întrebările, iar asta îl ajută mult pe terapeutul integrativ să vă cunoască înainte de întâlnire."
 
 const URMEAZA_TRIMIS =
-  "Mariana vă va contacta pentru programare. La consultație pornește de la răspunsurile dumneavoastră și stabiliți împreună pașii următori."
+  "Vă va contacta terapeutul integrativ de la Casa di Marianna pentru programare. La consultație pornește de la răspunsurile dumneavoastră și stabiliți împreună pașii următori."
 // Cu trimiterea oprită din config nu promitem că Mariana a primit ceva.
 const URMEAZA_NETRIMIS =
-  "Urmează programarea. La consultație, Mariana pornește de la răspunsurile dumneavoastră și stabiliți împreună pașii următori."
+  "Urmează programarea. La consultație, terapeutul integrativ pornește de la răspunsurile dumneavoastră și stabiliți împreună pașii următori."
 
 const MISCARE_REGULATA = ["mediu", "activ", "foarte_activ"]
 
@@ -49,7 +49,7 @@ function deExplorat(r: Raspunsuri, config: ConfigEvaluare): string[] {
   const somn = oreDeSomn(text(r, "ora_culcare"), text(r, "ora_trezire"))
   const somnDificil = ["adorm_greu", "treziri", "fara_energie"].includes(text(r, "somn"))
   if (somnDificil || (somn !== undefined && somn < config.semnale.somnMinimOre)) {
-    teme.push("Somnul este un subiect despre care Mariana va dori să afle mai multe de la dumneavoastră.")
+    teme.push("Somnul este un subiect despre care terapeutul integrativ va dori să afle mai multe de la dumneavoastră.")
   }
   if (esteDa(r, "omite_mese") || esteDa(r, "mananca_noaptea") || text(r, "ora_fixa") === "nu") {
     teme.push("Veți privi împreună ritmul meselor de-a lungul zilei, așa cum se potrivește programului dumneavoastră.")
@@ -66,7 +66,7 @@ function deExplorat(r: Raspunsuri, config: ConfigEvaluare): string[] {
     esteDa(r, "tratament_permanent") ||
     esteDa(r, "alergii_alimentare")
   if (sanatate) {
-    teme.push("Mariana va ține cont de ce ne-ați spus despre sănătatea dumneavoastră.")
+    teme.push("Terapeutul integrativ va ține cont de ce ne-ați spus despre sănătatea dumneavoastră.")
   }
   if (teme.length === 0) {
     teme.push("La consultație veți discuta pe îndelete despre obiceiurile dumneavoastră și despre ce v-ați dori să schimbați.")

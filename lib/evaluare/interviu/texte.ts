@@ -155,7 +155,7 @@ export const CAMPURI: Record<string, TextCamp> = {
   // ---- 1. Bază și siguranță ----
   data_nasterii: {
     intrebare: "Care este data dumneavoastră de naștere?",
-    ajutor: "Vârsta intră în calculele pe care le va verifica Mariana.",
+    ajutor: "Vârsta intră în calculele pe care le va verifica terapeutul integrativ.",
   },
   sex: {
     intrebare: "Care este sexul dumneavoastră?",
@@ -165,13 +165,13 @@ export const CAMPURI: Record<string, TextCamp> = {
   inaltime: { intrebare: "Ce înălțime aveți?" },
   greutate: {
     intrebare: "Ce greutate aveți acum?",
-    ajutor: "O valoare aproximativă este suficientă. Rămâne între dumneavoastră și Mariana.",
+    ajutor: "O valoare aproximativă este suficientă. Rămâne între dumneavoastră și terapeutul integrativ.",
   },
 
   // ---- 2. Date generale ----
   nume: { intrebare: "Cum vă numiți?", substituent: "Prenume și nume" },
   contact: {
-    intrebare: "Cum vă poate contacta Mariana?",
+    intrebare: "Cum vă poate contacta terapeutul integrativ?",
     ajutor: "Un număr de telefon sau o adresă de email.",
   },
   ocupatie: {
@@ -184,13 +184,13 @@ export const CAMPURI: Record<string, TextCamp> = {
 
   // ---- 3. Scop ----
   scopuri: {
-    intrebare: "Ce v-ați dori cel mai mult să se schimbe după ce lucrați cu Mariana?",
+    intrebare: "Ce v-ați dori cel mai mult să se schimbe după consultațiile de la Casa di Marianna?",
     ajutor: "Puteți alege mai multe răspunsuri.",
   },
   scop_altul: { intrebare: "Ce anume v-ați dori?" },
   scop_slabire_kg: {
     intrebare: "Dacă aveți o cifră în minte: câte kilograme v-ați dori să slăbiți? (opțional)",
-    ajutor: "Puteți lăsa liber. Veți stabili împreună cu Mariana ce este potrivit pentru dumneavoastră.",
+    ajutor: "Puteți lăsa liber. Veți stabili împreună cu terapeutul integrativ ce este potrivit pentru dumneavoastră.",
   },
   scop_slabire_luni: { intrebare: "Și în cât timp, aproximativ? (opțional)" },
 
@@ -216,7 +216,7 @@ export const CAMPURI: Record<string, TextCamp> = {
   suplimente: { intrebare: "Luați suplimente alimentare?" },
   suplimente_detalii: { intrebare: "Ce suplimente?" },
   fumat: { intrebare: "Fumați?" },
-  sanatate_altele: { intrebare: "Mai este ceva legat de sănătate ce ar trebui să știe Mariana? (opțional)" },
+  sanatate_altele: { intrebare: "Mai este ceva legat de sănătate ce ar trebui să știe terapeutul integrativ? (opțional)" },
 
   // ---- 5. Motivație ----
   motivatie_schimbare: {
@@ -322,12 +322,12 @@ export const CAMPURI: Record<string, TextCamp> = {
   // ---- 12. Încheiere ----
   mirodenii: { intrebare: "Folosiți mirodenii sau condimente?" },
   mirodenii_detalii: { intrebare: "Care anume?" },
-  informatii: { intrebare: "Mai este ceva ce ați vrea să știe Mariana? (opțional)" },
+  informatii: { intrebare: "Mai este ceva ce ați vrea să știe terapeutul integrativ? (opțional)" },
 
   // ---- Doar în interviul scurt ----
   varsta: {
     intrebare: "Ce vârstă aveți?",
-    ajutor: "Vârsta intră în calculele pe care le va verifica Mariana.",
+    ajutor: "Vârsta intră în calculele pe care le va verifica terapeutul integrativ.",
   },
   afectiuni: {
     intrebare: "Aveți vreuna dintre aceste probleme de sănătate?",
@@ -353,7 +353,7 @@ export const CAMPURI_SCURT: Record<string, TextCamp> = {
   scop_altul: { intrebare: "Ce anume v-ați dori? (opțional)" },
   scop_slabire_kg: {
     intrebare: "Dacă aveți o cifră în minte: câte kilograme v-ați dori să slăbiți? (opțional)",
-    ajutor: "Puteți lăsa liber. Veți stabili împreună cu Mariana ce este potrivit pentru dumneavoastră.",
+    ajutor: "Puteți lăsa liber. Veți stabili împreună cu terapeutul integrativ ce este potrivit pentru dumneavoastră.",
   },
   activitate_auto: {
     intrebare: "Câtă mișcare faceți într-o săptămână obișnuită?",
@@ -388,14 +388,14 @@ export const NEINTREBATE_SCURT = [
 export const INTRO_PASI: Record<string, string> = {
   data_nasterii: "Începem cu câteva date de bază.",
   nume: "Mulțumim. Acum câteva date generale.",
-  interventii: "Urmează câteva întrebări despre sănătate. O ajută pe Mariana să știe la ce să fie atentă.",
+  interventii: "Urmează câteva întrebări despre sănătate. Îl ajută pe terapeutul integrativ să știe la ce să fie atentă.",
   motivatie: "Două întrebări scurte despre cum vă simțiți față de schimbare.",
   carne: "Urmează grupele de alimente. Ne interesează ce mâncați de obicei, așa cum este.",
   scoff: "Cinci întrebări scurte despre relația cu mâncarea. Le punem tuturor și nu există răspunsuri bune sau greșite.",
   mirodenii: "Am ajuns aproape de final.",
   // interviul scurt
   despre: "Începem cu câteva date de bază.",
-  sanatate: "Câteva întrebări scurte despre sănătate. O ajută pe Mariana să știe la ce să fie atentă.",
+  sanatate: "Câteva întrebări scurte despre sănătate. Îl ajută pe terapeutul integrativ să știe la ce să fie atentă.",
   contact: "Am ajuns la final. Mai avem nevoie doar de datele de contact.",
 }
 
@@ -452,7 +452,7 @@ export const OPRIRI: Record<TipOprire, { titlu: string; paragrafe: string[] }> =
 export const UI = {
   titlu: "Evaluare nutrițională",
   bunVenit:
-    "Bine ați venit! Înainte să vă vedeți cu Mariana, am vrea să vă cunoaștem puțin, ca timpul de la consultație să fie al dumneavoastră, nu al formularelor. Întrebăm doar ce este necesar pentru evaluarea inițială; restul îl veți discuta la consultație.",
+    "Bine ați venit! Înainte de consultația cu terapeutul integrativ de la Casa di Marianna, am vrea să vă cunoaștem puțin, ca timpul de la consultație să fie al dumneavoastră, nu al formularelor. Întrebăm doar ce este necesar pentru evaluarea inițială; restul îl veți discuta la consultație.",
   durata: "Durează aproximativ 5-7 minute.",
   pas: (pas: number, total: number) => `Pasul ${pas} din ${total}`,
 
@@ -487,6 +487,8 @@ export const UI = {
     "Unele răspunsuri nu au putut fi verificate. Nu s-a pierdut nimic; vă rugăm să le revedeți cu butonul „Înapoi” și să încercați din nou.",
   eroareConsimtamant:
     "Nu putem trimite răspunsurile fără acordul dumneavoastră. Vă rugăm să reveniți la primul ecran și să bifați acordul.",
+  eroareTrimitereContact:
+    "Nu am reușit să trimitem datele de contact. Vă rugăm să încercați din nou peste câteva momente.",
   eroareContact: "Vă rugăm să verificați numele și datele de contact.",
   eroareAlternativa: "Dacă problema continuă, ne puteți scrie din pagina de contact.",
   contact: "Pagina de contact",
@@ -495,20 +497,20 @@ export const UI = {
   oprireGreseala: "Am ales din greșeală un răspuns",
   oprireMinor: "Nu am păstrat și nu am trimis niciun răspuns.",
   oprireNetrimis: "Răspunsurile dumneavoastră nu au fost salvate și nu au fost trimise nicăieri.",
-  oprireFaraTrimitere: "Dacă doriți să vorbiți cu Mariana, o puteți găsi în pagina de contact.",
+  oprireFaraTrimitere: "Dacă doriți să vorbiți cu terapeutul integrativ de la Casa di Marianna, ne găsiți în pagina de contact.",
   oprireContactTitlu: "Doriți să vă contactăm?",
   oprireContactIntro:
-    "Dacă doriți, lăsați-ne numele și un număr de telefon sau o adresă de email, iar Mariana vă va contacta. Trimitem doar numele și contactul, nu și răspunsurile dumneavoastră.",
+    "Dacă doriți, lăsați-ne numele și un număr de telefon sau o adresă de email, iar terapeutul integrativ de la Casa di Marianna vă va contacta. Trimitem doar numele și contactul, nu și răspunsurile dumneavoastră.",
   oprireContactButon: "Doresc să fiu contactat(ă)",
-  oprireContactTrimis: "Am trimis numele și datele dumneavoastră de contact. Mariana vă va contacta.",
+  oprireContactTrimis: "Am trimis numele și datele dumneavoastră de contact. Vă va contacta terapeutul integrativ de la Casa di Marianna.",
   urgenta: "Dacă vă simțiți rău acum sau aveți nevoie urgentă de ajutor, sunați la 112.",
 
   // ---- Ecranul final ----
   finalTitlu: "Vă mulțumim!",
   finalConfirmare:
-    "Răspunsurile dumneavoastră au fost trimise la Casa di Marianna. Mariana vă va contacta pentru programare.",
+    "Răspunsurile dumneavoastră au fost trimise la Casa di Marianna. Vă va contacta terapeutul integrativ pentru programare.",
   finalFaraTrimitere:
-    "Trimiterea nu este activă încă, așa că răspunsurile nu au fost trimise. Puteți lua legătura cu Mariana din pagina de contact.",
+    "Trimiterea nu este activă încă, așa că răspunsurile nu au fost trimise. Puteți lua legătura cu terapeutul integrativ de la Casa di Marianna din pagina de contact.",
   finalIntro: "Iată câteva observații, pe scurt:",
   finalAcasa: "Înapoi la site",
 }

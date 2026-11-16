@@ -33,7 +33,7 @@ export async function trimiteLaServer(cerere: Cerere): Promise<RezultatTrimitere
   }
 }
 
-export function mesajEroare(cod: CodRefuz | "retea"): string {
+export function mesajEroare(cod: CodRefuz | "retea", doarContact = false): string {
   switch (cod) {
     case "prea_multe_cereri":
       return UI.eroarePreaMulte
@@ -44,6 +44,6 @@ export function mesajEroare(cod: CodRefuz | "retea"): string {
     case "contact_invalid":
       return UI.eroareContact
     default:
-      return UI.eroareTrimitere
+      return doarContact ? UI.eroareTrimitereContact : UI.eroareTrimitere
   }
 }

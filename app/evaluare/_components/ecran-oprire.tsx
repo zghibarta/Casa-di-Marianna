@@ -90,7 +90,7 @@ function CerereContact({ consimtamant }: { consimtamant: boolean }) {
       return
     }
     setStareTrimitere("inactiv")
-    setEroare(mesajEroare(rezultat.cod))
+    setEroare(mesajEroare(rezultat.cod, true))
   }
 
   if (stareTrimitere === "trimis") {
