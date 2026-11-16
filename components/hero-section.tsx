@@ -19,6 +19,9 @@ export default function HeroSection() {
             <Link href="/contact" className="btn-primary">
               Programează o consultație
             </Link>
+            <Link href="/evaluare" className="btn-secondary">
+              Fă evaluarea nutrițională
+            </Link>
             <Link href="/servicii" className="btn-secondary">
               Descoperă serviciile
             </Link>
