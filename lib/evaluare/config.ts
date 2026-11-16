@@ -8,6 +8,8 @@
 // Protecțiile din PROTECTII (vârstă minimă, IMC minim, carbohidrați negativi, prag caloric)
 // NU fac parte din variante și se aplică indiferent de alegeri.
 
+import type { Autoapreciere } from "./tipuri"
+
 export const VERSIUNE_CONFIG = "faza1-2026-11-16"
 
 /** Opriri de siguranță. Nu depind de varianta de calcul și nu se dezactivează. */
@@ -18,6 +20,8 @@ export const PROTECTII = {
   /** Numărul de „da” la SCOFF de la care interviul se oprește (Morgan și colab., BMJ 1999). */
   scoffPragOprire: 2,
 } as const
+
+export type NivelActivitate = "sedentar" | "usor" | "moderat" | "activ" | "foarteActiv" | "extrem"
 
 export interface ConfigMetoda {
   /** A: formula Devine. B: interval IMC 18,5–24,9. */
@@ -37,6 +41,11 @@ export interface ConfigMetoda {
     /** 2 pe zi sau muncă fizică grea. */
     extrem: number
   }
+  /**
+   * Nivelul propus doar din autoapreciere, când interviul nu cere orarul antrenamentelor
+   * (interviul scurt). Coeficientul rezultat apare în fișă ca „de confirmat la consultație”.
+   */
+  coeficientDinAutoapreciere: Record<Autoapreciere, NivelActivitate>
   deficitKcal: number
   /** Deficitul se aplică doar de la acest IMC în sus. */
   imcMinimPentruDeficit: number
@@ -75,13 +84,21 @@ export interface ConfigSemnale {
 }
 
 export interface ConfigInterviu {
+  /**
+   * „scurt”: 10 ecrane, 5–10 minute, doar ce trebuie pentru evaluarea inițială.
+   * „complet”: chestionarul întreg din plan.md §3 (circa 38 de ecrane).
+   */
+  varianta: "scurt" | "complet"
   /** „tu” nu are încă formulări scrise; textele sunt în interviu/texte.ts. */
   adresare: "dumneavoastra" | "tu"
   scoffActiv: boolean
   grupaSanguinaActiva: boolean
   /** Bifa de acord pentru prelucrarea cu AI. Oprită în Faza 1, unde nu există AI. */
   consimtamantAI: boolean
-  /** Când e false, mesajele nu promit că Mariana a primit ceva. */
+  /**
+   * true: la „Trimite”, fișa pleacă pe email (app/api/evaluare). false: nimic nu pleacă din
+   * browser, serverul refuză orice cerere, iar mesajele nu promit că Mariana a primit ceva.
+   */
   trimitereActiva: boolean
   versiuneConsimtamant: string
 }
@@ -110,6 +127,16 @@ const METODA_A: ConfigMetoda = {
   reperGreutate: "A",
   rmb: "A",
   coeficientiActivitate: { sedentar: 1.2, usor: 1.375, moderat: 1.465, activ: 1.55, foarteActiv: 1.75, extrem: 1.9 },
+  // Valoarea implicită din interviul scurt, în lipsa orarului de antrenamente: fiecare nivel de
+  // autoapreciere duce la treapta cu aceeași descriere din tabelul de coeficienți. „Extrem”
+  // (1,9) nu se propune niciodată doar din autoapreciere.
+  coeficientDinAutoapreciere: {
+    pasiv: "sedentar",
+    usor: "usor",
+    mediu: "moderat",
+    activ: "activ",
+    foarte_activ: "foarteActiv",
+  },
   deficitKcal: 500,
   imcMinimPentruDeficit: 25,
   pragMinimKcal: { F: 1200, B: 1800 },
@@ -193,6 +220,10 @@ const SEMNALE_IMPLICITE: ConfigSemnale = {
 }
 
 const INTERVIU_IMPLICIT: ConfigInterviu = {
+  // Scurt (decizia lui Aurel și a Marianei, 16.11.2026): interviul complet era prea lung și
+  // prea intim pentru un prim contact. Întrebăm doar ce trebuie pentru evaluarea inițială și
+  // pentru siguranță; restul se discută la consultație. „complet” rămâne implementat.
+  varianta: "scurt",
   // „Dumneavoastră”, ca în chestionarul pe hârtie. Forma „tu” nu este scrisă încă, ca
   // Mariana să nu valideze două seturi de formulări (abatere acceptată de Aurel).
   adresare: "dumneavoastra",
@@ -200,11 +231,25 @@ const INTERVIU_IMPLICIT: ConfigInterviu = {
   scoffActiv: true,
   // Grupa sanguină nu intră în niciun calcul și dietele pe grupe nu au dovezi.
   grupaSanguinaActiva: false,
-  // Faza 1 nu folosește AI și nu trimite date: nu cerem acord pentru ce nu se întâmplă.
+  // Nu se folosește AI: nu cerem acord pentru ce nu se întâmplă.
   consimtamantAI: false,
+  // Activă: fișa pleacă pe email la Casa di Marianna, fără bază de date. Adresa și datele SMTP
+  // vin doar din variabilele de mediu (vezi .env.example). Pe false se revine la comportamentul
+  // „nimic nu părăsește browserul”.
   trimitereActiva: false,
-  versiuneConsimtamant: "faza1-v1",
+  versiuneConsimtamant: "scurt-v1",
 }
+
+/** Protecția anti-spam a rutei de trimitere și formatul fișei din email. */
+export const TRIMITERE = {
+  /** Cel mult atâtea cereri de la aceeași adresă IP în fereastra de mai jos. */
+  maxCereriPeIp: 6,
+  fereastraMinute: 10,
+  /** Dimensiunea maximă a unei cereri, în caractere. */
+  maxCaractereCerere: 20_000,
+  /** Fusul orar în care se scrie data primirii în fișă. */
+  fusOrar: "Europe/Chisinau",
+} as const
 
 export const VARIANTA_A: ConfigEvaluare = {
   versiune: `${VERSIUNE_CONFIG}/A`,
@@ -225,6 +270,11 @@ export const CONFIG_IMPLICIT: ConfigEvaluare = {
   metoda: METODA_IMPLICITA,
   semnale: SEMNALE_IMPLICITE,
   interviu: INTERVIU_IMPLICIT,
+}
+
+/** Aceeași configurare, cu altă variantă de interviu (pentru teste și pentru ecranul de debug). */
+export function cuVariantaInterviu(config: ConfigEvaluare, varianta: ConfigInterviu["varianta"]): ConfigEvaluare {
+  return { ...config, interviu: { ...config.interviu, varianta } }
 }
 
 /** Întoarce lista problemelor din configurare; goală dacă e validă. */

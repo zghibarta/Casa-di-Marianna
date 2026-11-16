@@ -11,14 +11,17 @@ import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import type { Camp } from "@/lib/evaluare/interviu/intrebari"
+import { optiuniCamp } from "@/lib/evaluare/interviu/graf"
+import { LIMITE_TEXT, type Camp } from "@/lib/evaluare/interviu/intrebari"
 import type { RandAntrenament, Valoare } from "@/lib/evaluare/interviu/raspunsuri"
-import { CAMPURI, OPTIUNI, type Optiune } from "@/lib/evaluare/interviu/texte"
+import { OPTIUNI, type TextCamp } from "@/lib/evaluare/interviu/texte"
 import type { Intensitate } from "@/lib/evaluare/tipuri"
 import { cn } from "@/lib/utils"
 
 interface Props {
   camp: Camp
+  /** Formularea întrebării, pentru varianta de interviu curentă. */
+  text: TextCamp | undefined
   valoare: Valoare | undefined
   eroare?: string
   onSchimba: (valoare: Valoare) => void
@@ -29,14 +32,13 @@ const CARD_OPTIUNE =
 
 const RAND_GOL: RandAntrenament = { tip: "", ori: "", durata: "", intensitate: "" }
 
-export function CampIntrebare({ camp, valoare, eroare, onSchimba }: Props) {
-  const text = CAMPURI[camp.id]
+export function CampIntrebare({ camp, text, valoare, eroare, onSchimba }: Props) {
   const idEticheta = `${camp.id}-eticheta`
   const idAjutor = text?.ajutor ? `${camp.id}-ajutor` : undefined
   const idEroare = eroare ? `${camp.id}-eroare` : undefined
   const descriere = [idAjutor, idEroare].filter(Boolean).join(" ") || undefined
   const sir = typeof valoare === "string" ? valoare : ""
-  const optiuni: Optiune[] = camp.tip === "da_nu" ? OPTIUNI.da_nu : camp.optiuni ? OPTIUNI[camp.optiuni] : []
+  const optiuni = optiuniCamp(camp)
 
   const comune = {
     id: camp.id,
@@ -53,14 +55,24 @@ export function CampIntrebare({ camp, valoare, eroare, onSchimba }: Props) {
           {...comune}
           value={sir}
           placeholder={text?.substituent}
+          maxLength={LIMITE_TEXT.text}
           className="bg-white"
           onChange={(e) => onSchimba(e.target.value)}
-          autoComplete="off"
+          autoComplete={camp.id === "nume" ? "name" : "off"}
         />
       )
       break
     case "text_lung":
-      control = <Textarea {...comune} value={sir} rows={3} className="bg-white" onChange={(e) => onSchimba(e.target.value)} />
+      control = (
+        <Textarea
+          {...comune}
+          value={sir}
+          rows={3}
+          maxLength={LIMITE_TEXT.text_lung}
+          className="bg-white"
+          onChange={(e) => onSchimba(e.target.value)}
+        />
+      )
       break
     case "numar":
       control = (
@@ -131,9 +143,12 @@ export function CampIntrebare({ camp, valoare, eroare, onSchimba }: Props) {
                 id={`${camp.id}-${opt.valoare}`}
                 checked={alese.includes(opt.valoare)}
                 className="h-5 w-5"
-                onCheckedChange={(bifat) =>
-                  onSchimba(bifat === true ? [...alese, opt.valoare] : alese.filter((x) => x !== opt.valoare))
-                }
+                onCheckedChange={(bifat) => {
+                  if (bifat !== true) return onSchimba(alese.filter((x) => x !== opt.valoare))
+                  // Opțiunea exclusivă („niciuna”) nu se combină cu celelalte.
+                  if (opt.valoare === camp.exclusiv) return onSchimba([opt.valoare])
+                  onSchimba([...alese.filter((x) => x !== camp.exclusiv), opt.valoare])
+                }}
               />
               <span>{opt.eticheta}</span>
             </label>

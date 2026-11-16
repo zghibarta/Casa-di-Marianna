@@ -1,6 +1,11 @@
-// Graful de întrebări (plan.md §3 și §7). Ordinea și ramificațiile sunt date, nu logică de UI:
-// fiecare pas este un ecran cu o întrebare-poartă și detaliile ei condiționale.
-// Formulările sunt în texte.ts.
+// Graful de întrebări. Ordinea și ramificațiile sunt date, nu logică de UI: fiecare pas este un
+// ecran. Formulările sunt în texte.ts.
+//
+// Există două variante, alese din config (`interviu.varianta`):
+//   PASI_SCURT   – 9 ecrane după consimțământ (10 în total), doar ce trebuie pentru evaluarea
+//                  inițială și pentru opririle de siguranță;
+//   PASI_COMPLET – chestionarul întreg din plan.md §3 și §7 (o întrebare-poartă pe ecran, cu
+//                  detaliile ei condiționale).
 
 import type { ConfigEvaluare } from "../config"
 import { esteDa, lista, text, type Raspunsuri } from "./raspunsuri"
@@ -28,6 +33,10 @@ export interface Camp {
   min?: number
   max?: number
   unitate?: string
+  /** La alegere_multipla: opțiunea care nu se poate combina cu altele („niciuna”). */
+  exclusiv?: string
+  /** „contact”: trebuie să arate a număr de telefon sau a adresă de email. */
+  format?: "contact"
   /** Câmpul apare doar când condiția e adevărată. Fără condiție, apare mereu. */
   vizibil?: (r: Raspunsuri, config: ConfigEvaluare) => boolean
 }
@@ -80,7 +89,99 @@ const grupa = (id: string, extra: Camp[] = []): Pas => ({
 
 export const SCOFF_IDS = ["scoff_1", "scoff_2", "scoff_3", "scoff_4", "scoff_5"] as const
 
-export const PASI: Pas[] = [
+/** Lungimea maximă a răspunsurilor scrise, în caractere (verificată și pe server). */
+export const LIMITE_TEXT = { text: 200, text_lung: 1500 } as const
+
+const PAS_CORP: Pas = {
+  id: "corp",
+  bloc: "baza",
+  campuri: [
+    o("inaltime", "numar", { min: 120, max: 230, unitate: "cm" }),
+    o("greutate", "numar", { min: 30, max: 300, unitate: "kg" }),
+  ],
+}
+
+// Relația cu mâncarea (SCOFF): rămâne în ambele variante, pentru siguranță.
+const PAS_SCOFF: Pas = {
+  id: "scoff",
+  bloc: "relatie",
+  campuri: SCOFF_IDS.map((id) => c(id, "da_nu", (_r, config) => config.interviu.scoffActiv)),
+}
+
+// ---------- Varianta scurtă: ecranele 2–10 (ecranul 1 este consimțământul) ----------
+
+export const PASI_SCURT: Pas[] = [
+  // 2. Vârsta în ani, nu data nașterii: e suficientă pentru formule și mai puțin personală.
+  {
+    id: "despre",
+    bloc: "baza",
+    campuri: [
+      o("varsta", "numar", { min: 1, max: 120, unitate: "ani" }),
+      o("sex", "alegere", { optiuni: "sex" }),
+      c("sarcina_alaptare", "da_nu", (r) => text(r, "sex") === "F"),
+    ],
+  },
+  // 3.
+  PAS_CORP,
+  // 4.
+  {
+    id: "scop",
+    bloc: "scop",
+    campuri: [
+      o("scopuri", "alegere_multipla", { optiuni: "scopuri" }),
+      { ...optional("scop_altul", "text"), vizibil: (r) => lista(r, "scopuri").includes("altul") },
+      {
+        ...optional("scop_slabire_kg", "numar", { min: 1, max: 150, unitate: "kg" }),
+        vizibil: (r) => lista(r, "scopuri").includes("slabire"),
+      },
+    ],
+  },
+  // 5. Listă de bifat, fără text liber. Insulina se întreabă doar la diabet.
+  {
+    id: "sanatate",
+    bloc: "sanatate",
+    campuri: [
+      o("afectiuni", "alegere_multipla", { optiuni: "afectiuni", exclusiv: "niciuna" }),
+      c("insulina", "da_nu", (r) => lista(r, "afectiuni").includes("diabet")),
+      o("tratament_permanent", "da_nu"),
+    ],
+  },
+  // 6. Alergiile sunt întrebare da/nu (obligatorie, pentru siguranță); detaliile, un singur
+  // câmp scurt și opțional.
+  {
+    id: "alergii",
+    bloc: "alimentatie",
+    campuri: [o("alergii_alimentare", "da_nu"), optional("alimente_evitate", "text")],
+  },
+  // 7. Doar autoaprecierea; coeficientul se propune din ea (config: coeficientDinAutoapreciere).
+  {
+    id: "activitate",
+    bloc: "activitate",
+    campuri: [o("activitate_auto", "alegere", { optiuni: "autoapreciere_scurt" })],
+  },
+  // 8.
+  {
+    id: "mese",
+    bloc: "obiceiuri",
+    campuri: [
+      o("mese_pe_zi", "numar", { min: 0, max: 10, unitate: "mese" }),
+      o("omite_mese", "da_nu"),
+      o("mananca_noaptea", "da_nu"),
+    ],
+  },
+  // 9.
+  PAS_SCOFF,
+  // 10. Butonul acestui ecran este „Trimite”.
+  {
+    id: "contact",
+    bloc: "contact",
+    campuri: [o("nume", "text"), o("contact", "text", { format: "contact" }), optional("mesaj", "text_lung")],
+  },
+]
+
+// ---------- Varianta completă: chestionarul întreg (dezactivat implicit din config) ----------
+
+export const PASI_COMPLET: Pas[] = [
   // ---- 1. Bază și siguranță ----
   { id: "data_nasterii", bloc: "baza", campuri: [o("data_nasterii", "data")] },
   {
@@ -91,17 +192,10 @@ export const PASI: Pas[] = [
       c("sarcina_alaptare", "da_nu", (r) => text(r, "sex") === "F"),
     ],
   },
-  {
-    id: "corp",
-    bloc: "baza",
-    campuri: [
-      o("inaltime", "numar", { min: 120, max: 230, unitate: "cm" }),
-      o("greutate", "numar", { min: 30, max: 300, unitate: "kg" }),
-    ],
-  },
+  PAS_CORP,
 
   // ---- 2. Date generale ----
-  { id: "nume", bloc: "general", campuri: [o("nume", "text"), o("contact", "text")] },
+  { id: "nume", bloc: "general", campuri: [o("nume", "text"), o("contact", "text", { format: "contact" })] },
   {
     id: "ocupatie",
     bloc: "general",
@@ -253,11 +347,7 @@ export const PASI: Pas[] = [
   grupa("dulciuri"),
 
   // ---- 11. Relația cu mâncarea (SCOFF) ----
-  {
-    id: "scoff",
-    bloc: "relatie",
-    campuri: SCOFF_IDS.map((id) => c(id, "da_nu", (_r, config) => config.interviu.scoffActiv)),
-  },
+  PAS_SCOFF,
 
   // ---- 12. Încheiere ----
   {
@@ -266,3 +356,8 @@ export const PASI: Pas[] = [
     campuri: [o("mirodenii", "da_nu"), c("mirodenii_detalii", "text", da("mirodenii")), optional("informatii", "text_lung")],
   },
 ]
+
+/** Pașii variantei de interviu aleasă în config. */
+export function pasiInterviu(config: ConfigEvaluare): Pas[] {
+  return config.interviu.varianta === "complet" ? PASI_COMPLET : PASI_SCURT
+}

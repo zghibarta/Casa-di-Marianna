@@ -1,24 +1,28 @@
 "use client"
 
+// Ecranul 1: acordul, înaintea oricărei întrebări. Bifa este nebifată implicit și obligatorie.
+// Textele sunt în lib/evaluare/interviu/texte.ts.
+
 import { useState } from "react"
-import { Info } from "lucide-react"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CONFIG_IMPLICIT } from "@/lib/evaluare/config"
-import { UI } from "@/lib/evaluare/interviu/texte"
+import { totalEcrane } from "@/lib/evaluare/interviu/graf"
+import { UI, textInformare } from "@/lib/evaluare/interviu/texte"
+import { BaraProgres } from "./bara-progres"
 import { useEvaluare } from "./stare"
 
 const config = CONFIG_IMPLICIT
 
-export function Consimtamant() {
+/** @param adresaEmail adresa la care pleacă fișa (din variabilele de mediu), afișată în informare. */
+export function Consimtamant({ adresaEmail }: { adresaEmail?: string }) {
   const { stare, actualizeaza } = useEvaluare()
   const [sanatate, setSanatate] = useState(stare.consimtamant?.sanatate ?? false)
   const [ai, setAi] = useState(stare.consimtamant?.ai ?? false)
-  const [varsta, setVarsta] = useState(stare.consimtamant?.varsta ?? false)
 
   const cereAI = config.interviu.consimtamantAI
-  const complet = sanatate && varsta && (!cereAI || ai)
+  const complet = sanatate && (!cereAI || ai)
 
   const incepe = () => {
     if (!complet) return
@@ -28,7 +32,6 @@ export function Consimtamant() {
         versiune: config.interviu.versiuneConsimtamant,
         data: new Date().toISOString(),
         sanatate,
-        varsta,
         ai: cereAI ? ai : false,
       },
     })
@@ -36,23 +39,30 @@ export function Consimtamant() {
 
   return (
     <div className="space-y-6">
+      <BaraProgres pas={1} total={totalEcrane(stare.raspunsuri, config)} procent={0} />
+
       <header className="space-y-4">
         <h1 className="text-3xl font-bold md:text-4xl">{UI.titlu}</h1>
         <p className="text-lg text-gray-700">{UI.bunVenit}</p>
+        <p className="flex items-center gap-2 font-medium text-primary">
+          <Clock className="h-5 w-5 shrink-0" aria-hidden="true" />
+          {UI.durata}
+        </p>
       </header>
 
-      <Alert>
-        <Info className="h-4 w-4" aria-hidden="true" />
-        <AlertDescription>{UI.faza1}</AlertDescription>
-      </Alert>
-
       <div className="space-y-3">
-        <Bifa id="acord-sanatate" bifat={sanatate} onSchimba={setSanatate} text={UI.consimtamantSanatate} />
+        <Bifa
+          id="acord-sanatate"
+          bifat={sanatate}
+          onSchimba={setSanatate}
+          text={UI.consimtamantSanatate}
+          descrisDe="informare-date"
+        />
         {cereAI && <Bifa id="acord-ai" bifat={ai} onSchimba={setAi} text={UI.consimtamantAI} />}
-        <Bifa id="acord-varsta" bifat={varsta} onSchimba={setVarsta} text={UI.consimtamantVarsta} />
+        <p id="informare-date" className="text-sm leading-relaxed text-muted-foreground">
+          {config.interviu.trimitereActiva ? textInformare(adresaEmail) : UI.informareFaraTrimitere}
+        </p>
       </div>
-
-      <p className="text-sm text-muted-foreground">{UI.notaInformare}</p>
 
       <Button size="lg" onClick={incepe} disabled={!complet} className="w-full sm:w-auto">
         {UI.incepe}
@@ -61,7 +71,7 @@ export function Consimtamant() {
   )
 }
 
-function Bifa(props: { id: string; bifat: boolean; onSchimba: (v: boolean) => void; text: string }) {
+function Bifa(props: { id: string; bifat: boolean; onSchimba: (v: boolean) => void; text: string; descrisDe?: string }) {
   return (
     <label
       htmlFor={props.id}
@@ -71,6 +81,7 @@ function Bifa(props: { id: string; bifat: boolean; onSchimba: (v: boolean) => vo
         id={props.id}
         checked={props.bifat}
         onCheckedChange={(v) => props.onSchimba(v === true)}
+        aria-describedby={props.descrisDe}
         className="mt-0.5 h-5 w-5"
       />
       <span className="leading-relaxed">{props.text}</span>

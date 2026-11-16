@@ -1,17 +1,23 @@
 // Rezumatul pentru clientă: 3–4 observații, fără cifre, fără diagnostic, fără plan.
-// În Faza 1 se construiește din șabloane fixe, niciodată din textul liber al clientei.
+// Se construiește din șabloane fixe, niciodată din textul liber al clientei. Aceleași șabloane
+// servesc ambele variante de interviu: o observație apare doar dacă întrebarea ei a fost pusă.
 // În Faza 3 îl va scrie modelul, iar verificaRezumat() va respinge orice text cu cifre.
 
 import type { ConfigEvaluare } from "../config"
 import { frecventaPeSaptamana, raspunsuriActive } from "./graf"
 import { oreDeSomn, antrenamenteDinRaspunsuri } from "./mapare"
-import { esteDa, numar, text, type Raspunsuri } from "./raspunsuri"
+import { esteDa, lista, numar, text, type Raspunsuri } from "./raspunsuri"
 
 const FALLBACK_PUNCT_FORTE =
   "Ați răspuns cu răbdare la toate întrebările, iar asta o ajută mult pe Mariana să vă cunoască înainte de întâlnire."
 
-const URMEAZA =
+const URMEAZA_TRIMIS =
+  "Mariana vă va contacta pentru programare. La consultație pornește de la răspunsurile dumneavoastră și stabiliți împreună pașii următori."
+// Cu trimiterea oprită din config nu promitem că Mariana a primit ceva.
+const URMEAZA_NETRIMIS =
   "Urmează programarea. La consultație, Mariana pornește de la răspunsurile dumneavoastră și stabiliți împreună pașii următori."
+
+const MISCARE_REGULATA = ["mediu", "activ", "foarte_activ"]
 
 function punctForte(r: Raspunsuri): string {
   const motivatie = Math.min(numar(r, "motivatie_schimbare") ?? 0, numar(r, "motivatie_recomandari") ?? 0)
@@ -21,10 +27,18 @@ function punctForte(r: Raspunsuri): string {
   if ((frecventaPeSaptamana(r, "legume_frecventa") ?? 0) >= 5) {
     return "Legumele apar des în mesele dumneavoastră, iar acesta este un obicei valoros pe care se poate construi."
   }
-  if (antrenamenteDinRaspunsuri(r).length > 0) {
+  // Interviul scurt nu are orar de antrenamente: contează autoaprecierea.
+  const faraOrar = r.antrenamente === undefined && MISCARE_REGULATA.includes(text(r, "activitate_auto"))
+  if (antrenamenteDinRaspunsuri(r).length > 0 || faraOrar) {
     return "Mișcarea face deja parte din săptămâna dumneavoastră, iar acesta este un sprijin real pentru ce urmează."
   }
-  if (text(r, "ora_fixa") === "da" && !esteDa(r, "omite_mese")) {
+  const ritmComplet = text(r, "ora_fixa") === "da" && !esteDa(r, "omite_mese")
+  const ritmScurt =
+    r.ora_fixa === undefined &&
+    (numar(r, "mese_pe_zi") ?? 0) >= 3 &&
+    text(r, "omite_mese") === "nu" &&
+    text(r, "mananca_noaptea") === "nu"
+  if (ritmComplet || ritmScurt) {
     return "Aveți deja un ritm al meselor, iar acesta este un sprijin real pentru ce urmează."
   }
   return FALLBACK_PUNCT_FORTE
@@ -44,7 +58,14 @@ function deExplorat(r: Raspunsuri, config: ConfigEvaluare): string[] {
   if (apa !== undefined && apa < config.semnale.apaMinimaLitri + 0.5) {
     teme.push("Veți vorbi și despre lichidele din timpul zilei.")
   }
-  if (esteDa(r, "boli_cronice") || esteDa(r, "tratament") || esteDa(r, "alergii")) {
+  const sanatate =
+    esteDa(r, "boli_cronice") ||
+    esteDa(r, "tratament") ||
+    esteDa(r, "alergii") ||
+    lista(r, "afectiuni").some((x) => x !== "niciuna") ||
+    esteDa(r, "tratament_permanent") ||
+    esteDa(r, "alergii_alimentare")
+  if (sanatate) {
     teme.push("Mariana va ține cont de ce ne-ați spus despre sănătatea dumneavoastră.")
   }
   if (teme.length === 0) {
@@ -56,7 +77,8 @@ function deExplorat(r: Raspunsuri, config: ConfigEvaluare): string[] {
 /** 3–4 observații: un punct forte, 1–2 teme de explorat cu Mariana și ce urmează. */
 export function construiesteRezumat(raspunsuri: Raspunsuri, config: ConfigEvaluare): string[] {
   const r = raspunsuriActive(raspunsuri, config)
-  return [punctForte(r), ...deExplorat(r, config), URMEAZA]
+  const urmeaza = config.interviu.trimitereActiva ? URMEAZA_TRIMIS : URMEAZA_NETRIMIS
+  return [punctForte(r), ...deExplorat(r, config), urmeaza]
 }
 
 /**

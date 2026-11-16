@@ -36,11 +36,18 @@ export interface Antrenament {
 export interface ProfilActivitate {
   autoapreciere?: Autoapreciere
   antrenamente: Antrenament[]
+  /**
+   * Interviul nu a cerut orarul antrenamentelor (varianta scurtă): coeficientul se propune
+   * doar din autoapreciere, după `coeficientDinAutoapreciere` din config.
+   */
+  doarAutoapreciere?: boolean
 }
 
 /** Informații din interviu care nu intră în formule, dar produc semnale pentru Mariana. */
 export interface ContextSemnale {
   boliCronice?: boolean
+  /** Afecțiunile bifate în interviul scurt, ca text pentru fișă. */
+  afectiuni?: string[]
   tratament?: boolean
   alergii?: boolean
   interventii?: boolean
@@ -195,12 +202,18 @@ export interface RezultatOprit {
   semnale: Semnal[]
 }
 
+/**
+ * „confirmat”: introdus de Mariana. „propus”: din orarul antrenamentelor. „autoapreciere”: doar din
+ * autoapreciere (interviul scurt). „implicit”: lipsesc datele, s-a folosit sedentar.
+ */
+export type SursaCoeficient = "confirmat" | "propus" | "autoapreciere" | "implicit"
+
 export interface RezultatCalculat {
   stare: "calculat"
   versiuneConfig: string
   indicatori: Indicatori
   rmb: RezultatRmb
-  activitate: { coef: number; sursa: "confirmat" | "propus" | "implicit"; explicatie: string }
+  activitate: { coef: number; sursa: SursaCoeficient; explicatie: string }
   mentinereKcal: number
   tintaKcal: number
   deficitAplicat: boolean

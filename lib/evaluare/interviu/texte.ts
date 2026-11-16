@@ -25,6 +25,9 @@ export const BLOCURI = {
   alimente: "Alimente",
   relatie: "Relația cu mâncarea",
   incheiere: "Încheiere",
+  // doar în interviul scurt
+  alimentatie: "Alergii și preferințe",
+  contact: "Date de contact",
 } as const
 export type IdBloc = keyof typeof BLOCURI
 
@@ -78,6 +81,25 @@ export const OPTIUNI = {
     { valoare: "mediu", eticheta: "Mișcare moderată" },
     { valoare: "usor", eticheta: "Mișcare ușoară" },
     { valoare: "pasiv", eticheta: "Aproape deloc" },
+  ],
+  // Interviul scurt: aceleași niveluri, cu repere concrete, pentru că din acest răspuns se
+  // propune coeficientul de activitate (reperele sunt cele din tabelul de coeficienți).
+  autoapreciere_scurt: [
+    { valoare: "pasiv", eticheta: "Aproape deloc (muncă de birou, fără mișcare regulată)" },
+    { valoare: "usor", eticheta: "Mișcare ușoară (de 1–3 ori pe săptămână)" },
+    { valoare: "mediu", eticheta: "Mișcare moderată (de 4–5 ori pe săptămână)" },
+    { valoare: "activ", eticheta: "Multă mișcare (zilnic sau antrenamente intense de 3–4 ori pe săptămână)" },
+    { valoare: "foarte_activ", eticheta: "Foarte multă mișcare (antrenamente intense aproape în fiecare zi)" },
+  ],
+  // Interviul scurt, ecranul de sănătate. „niciuna” nu se combină cu celelalte.
+  afectiuni: [
+    { valoare: "diabet", eticheta: "Diabet" },
+    { valoare: "tiroida", eticheta: "O boală a tiroidei" },
+    { valoare: "inima_tensiune", eticheta: "O boală de inimă sau tensiune arterială" },
+    { valoare: "rinichi", eticheta: "O boală de rinichi" },
+    { valoare: "digestiva", eticheta: "O boală digestivă" },
+    { valoare: "alta", eticheta: "Altă problemă de sănătate" },
+    { valoare: "niciuna", eticheta: "Niciuna dintre acestea" },
   ],
   intensitate: [
     { valoare: "usoara", eticheta: "Ușoară" },
@@ -147,10 +169,10 @@ export const CAMPURI: Record<string, TextCamp> = {
   },
 
   // ---- 2. Date generale ----
-  nume: { intrebare: "Cum vă numiți?", substituent: "Nume și prenume" },
+  nume: { intrebare: "Cum vă numiți?", substituent: "Prenume și nume" },
   contact: {
-    intrebare: "La ce număr vă poate găsi Mariana?",
-    ajutor: "Telefon, Telegram sau WhatsApp.",
+    intrebare: "Cum vă poate contacta Mariana?",
+    ajutor: "Un număr de telefon sau o adresă de email.",
   },
   ocupatie: {
     intrebare: "Cu ce vă ocupați?",
@@ -301,7 +323,66 @@ export const CAMPURI: Record<string, TextCamp> = {
   mirodenii: { intrebare: "Folosiți mirodenii sau condimente?" },
   mirodenii_detalii: { intrebare: "Care anume?" },
   informatii: { intrebare: "Mai este ceva ce ați vrea să știe Mariana? (opțional)" },
+
+  // ---- Doar în interviul scurt ----
+  varsta: {
+    intrebare: "Ce vârstă aveți?",
+    ajutor: "Vârsta intră în calculele pe care le va verifica Mariana.",
+  },
+  afectiuni: {
+    intrebare: "Aveți vreuna dintre aceste probleme de sănătate?",
+    ajutor: "Bifați tot ce se potrivește. Despre detalii veți vorbi la consultație.",
+  },
+  tratament_permanent: {
+    intrebare: "Luați un tratament permanent?",
+    ajutor: "Medicamente pe care le luați în mod regulat, recomandate de medic.",
+  },
+  alergii_alimentare: { intrebare: "Aveți alergii sau intoleranțe alimentare?" },
+  alimente_evitate: {
+    intrebare: "La ce anume? Sunt și alimente pe care nu le consumați? (opțional)",
+    ajutor: "Pe scurt. De exemplu: intoleranță la lactoză; nu mănânc pește.",
+  },
+  mesaj: { intrebare: "Doriți să îi transmiteți ceva Marianei? (opțional)" },
 }
+
+/**
+ * Formulări diferite în interviul scurt pentru câmpuri care există și în cel complet.
+ * Ce nu apare aici folosește textul din CAMPURI.
+ */
+export const CAMPURI_SCURT: Record<string, TextCamp> = {
+  scop_altul: { intrebare: "Ce anume v-ați dori? (opțional)" },
+  scop_slabire_kg: {
+    intrebare: "Dacă aveți o cifră în minte: câte kilograme v-ați dori să slăbiți? (opțional)",
+    ajutor: "Puteți lăsa liber. Veți stabili împreună cu Mariana ce este potrivit pentru dumneavoastră.",
+  },
+  activitate_auto: {
+    intrebare: "Câtă mișcare faceți într-o săptămână obișnuită?",
+    ajutor: "Alegeți varianta cea mai apropiată. Orice răspuns este bun.",
+  },
+  mese_pe_zi: { intrebare: "Câte mese aveți de obicei pe zi?", ajutor: "Fără gustări." },
+  omite_mese: { intrebare: "Vi se întâmplă să săriți peste mese?" },
+}
+
+export function textCamp(id: string, varianta: "scurt" | "complet"): TextCamp | undefined {
+  return (varianta === "scurt" ? CAMPURI_SCURT[id] : undefined) ?? CAMPURI[id]
+}
+
+/** Ce nu se mai întreabă în interviul scurt; apare în fișă ca listă de discutat la consultație. */
+export const NEINTREBATE_SCURT = [
+  "ocupația",
+  "greutatea maximă și minimă",
+  "intervențiile și traumele",
+  "antecedentele familiale",
+  "suplimentele",
+  "fumatul",
+  "motivația",
+  "somnul",
+  "apa și celelalte băuturi",
+  "alcoolul",
+  "orarul și consistența meselor",
+  "grupele de alimente",
+  "mirodeniile",
+]
 
 /** Text scurt afișat deasupra întrebărilor unui pas. */
 export const INTRO_PASI: Record<string, string> = {
@@ -312,6 +393,10 @@ export const INTRO_PASI: Record<string, string> = {
   carne: "Urmează grupele de alimente. Ne interesează ce mâncați de obicei, așa cum este.",
   scoff: "Cinci întrebări scurte despre relația cu mâncarea. Le punem tuturor și nu există răspunsuri bune sau greșite.",
   mirodenii: "Am ajuns aproape de final.",
+  // interviul scurt
+  despre: "Începem cu câteva date de bază.",
+  sanatate: "Câteva întrebări scurte despre sănătate. O ajută pe Mariana să știe la ce să fie atentă.",
+  contact: "Am ajuns la final. Mai avem nevoie doar de datele de contact.",
 }
 
 export const ERORI = {
@@ -321,6 +406,9 @@ export const ERORI = {
   data: "Vă rugăm să alegeți o dată validă.",
   ora: "Vă rugăm să alegeți o oră.",
   antrenament: "Pentru fiecare activitate scrisă, completați de câte ori pe săptămână și intensitatea.",
+  optiune: "Vă rugăm să alegeți una dintre variante.",
+  preaLung: (max: number) => `Vă rugăm să scurtați răspunsul (cel mult ${max} de caractere).`,
+  contact: "Vă rugăm să scrieți un număr de telefon sau o adresă de email.",
 }
 
 export const OPRIRI: Record<TipOprire, { titlu: string; paragrafe: string[] }> = {
@@ -364,47 +452,68 @@ export const OPRIRI: Record<TipOprire, { titlu: string; paragrafe: string[] }> =
 export const UI = {
   titlu: "Evaluare nutrițională",
   bunVenit:
-    "Bine ați venit! Înainte să vă vedeți cu Mariana, am vrea să vă cunoaștem puțin, ca timpul de la consultație să fie al dumneavoastră, nu al formularelor. Durează cam 15 minute și vă puteți opri oricând.",
-  faza1:
-    "Această versiune este în pregătire. Răspunsurile rămân doar în browserul dumneavoastră: nu sunt salvate și nu sunt trimise nicăieri. Dacă închideți sau reîncărcați pagina, ele se pierd.",
+    "Bine ați venit! Înainte să vă vedeți cu Mariana, am vrea să vă cunoaștem puțin, ca timpul de la consultație să fie al dumneavoastră, nu al formularelor. Întrebăm doar ce este necesar pentru evaluarea inițială; restul îl veți discuta la consultație.",
+  durata: "Durează aproximativ 5-7 minute.",
+  pas: (pas: number, total: number) => `Pasul ${pas} din ${total}`,
+
+  // ---- Consimțământul (ecranul 1). Bifa este nebifată implicit și obligatorie. ----
   consimtamantSanatate:
-    "Sunt de acord ca răspunsurile mele, inclusiv cele despre sănătate, să fie folosite pentru evaluarea nutrițională și pregătirea consultației.",
+    "Sunt de acord ca datele mele, inclusiv cele despre sănătate, să fie folosite pentru evaluarea nutrițională inițială la Casa di Marianna.",
+  // {adresa} se înlocuiește cu adresa din variabila de mediu EVALUARE_EMAIL_TO, adică exact
+  // adresa la care pleacă fișa. Adresa nu se scrie aici: repo-ul este public.
+  informare:
+    "Răspunsurile dumneavoastră nu se salvează pe site. Ele se trimit direct pe adresa de email la Casa di Marianna{adresa}, la care are acces doar medicul terapeut integrativ, și sunt folosite doar pentru pregătirea consultației. Puteți cere oricând vizualizarea sau ștergerea lor scriind la aceeași adresă.",
+  // Varianta afișată când trimiterea este oprită din config (trimitereActiva: false).
+  informareFaraTrimitere:
+    "Trimiterea nu este activă încă. Răspunsurile rămân doar în browserul dumneavoastră: nu sunt salvate și nu sunt trimise nicăieri. Dacă închideți sau reîncărcați pagina, ele se pierd.",
   consimtamantAI:
     "Sunt de acord ca răspunsurile mele, fără nume și date de contact, să fie prelucrate cu un serviciu extern de inteligență artificială.",
-  consimtamantVarsta: "Confirm că am împlinit 18 ani.",
-  notaInformare: "Nota de informare privind datele personale: [de completat de Mariana / jurist]",
+
   incepe: "Începem",
   inapoi: "Înapoi",
   continua: "Continuă",
   finalizeaza: "Finalizează",
-  oprireFaraTrimitere:
-    "Răspunsurile dumneavoastră nu au fost salvate și nu au fost trimise nicăieri. Dacă doriți să vorbiți cu Mariana, o puteți găsi în pagina de contact.",
-  oprireCuTrimitere: "Mariana va primi mesajul și vă va contacta.",
-  oprireMinor: "Nu am păstrat niciun răspuns.",
-  urgenta: "Dacă vă simțiți rău acum sau aveți nevoie urgentă de ajutor, sunați la 112.",
-  contact: "Pagina de contact",
-  finalTitlu: "Vă mulțumim!",
-  finalIntro: "Am ajuns la final. Iată câteva observații, pe scurt:",
-  programareTitlu: "Programarea",
-  programareIntro: "Alegeți două sau trei intervale care vi se potrivesc și cum preferați să fiți contactat(ă).",
-  programareIntervale: "Intervale preferate",
-  programareCanal: "Cum preferați să vă contacteze Mariana?",
-  programareButon: "Cer o programare",
-  programareInCurand:
-    "Programarea online va fi activată în curând. Deocamdată cererea nu a fost trimisă; puteți lua legătura cu Mariana din pagina de contact.",
   parasire: "Dacă părăsiți pagina, răspunsurile se pierd.",
+  capcana: "Lăsați acest câmp necompletat",
+
+  // ---- Trimiterea ----
+  trimite: "Trimite",
+  seTrimite: "Se trimite…",
+  eroareTrimitere:
+    "Nu am reușit să trimitem răspunsurile. Nu s-a pierdut nimic: răspunsurile dumneavoastră sunt încă aici. Vă rugăm să încercați din nou peste câteva momente.",
+  eroarePreaMulte:
+    "Au fost prea multe încercări într-un timp scurt. Răspunsurile dumneavoastră sunt încă aici; vă rugăm să încercați din nou peste câteva minute.",
+  eroareRaspunsuri:
+    "Unele răspunsuri nu au putut fi verificate. Nu s-a pierdut nimic; vă rugăm să le revedeți cu butonul „Înapoi” și să încercați din nou.",
+  eroareConsimtamant:
+    "Nu putem trimite răspunsurile fără acordul dumneavoastră. Vă rugăm să reveniți la primul ecran și să bifați acordul.",
+  eroareContact: "Vă rugăm să verificați numele și datele de contact.",
+  eroareAlternativa: "Dacă problema continuă, ne puteți scrie din pagina de contact.",
+  contact: "Pagina de contact",
+
+  // ---- Opririle de siguranță ----
+  oprireGreseala: "Am ales din greșeală un răspuns",
+  oprireMinor: "Nu am păstrat și nu am trimis niciun răspuns.",
+  oprireNetrimis: "Răspunsurile dumneavoastră nu au fost salvate și nu au fost trimise nicăieri.",
+  oprireFaraTrimitere: "Dacă doriți să vorbiți cu Mariana, o puteți găsi în pagina de contact.",
+  oprireContactTitlu: "Doriți să vă contactăm?",
+  oprireContactIntro:
+    "Dacă doriți, lăsați-ne numele și un număr de telefon sau o adresă de email, iar Mariana vă va contacta. Trimitem doar numele și contactul, nu și răspunsurile dumneavoastră.",
+  oprireContactButon: "Doresc să fiu contactat(ă)",
+  oprireContactTrimis: "Am trimis numele și datele dumneavoastră de contact. Mariana vă va contacta.",
+  urgenta: "Dacă vă simțiți rău acum sau aveți nevoie urgentă de ajutor, sunați la 112.",
+
+  // ---- Ecranul final ----
+  finalTitlu: "Vă mulțumim!",
+  finalConfirmare:
+    "Răspunsurile dumneavoastră au fost trimise la Casa di Marianna. Mariana vă va contacta pentru programare.",
+  finalFaraTrimitere:
+    "Trimiterea nu este activă încă, așa că răspunsurile nu au fost trimise. Puteți lua legătura cu Mariana din pagina de contact.",
+  finalIntro: "Iată câteva observații, pe scurt:",
+  finalAcasa: "Înapoi la site",
 }
 
-export const INTERVALE_PROGRAMARE: Optiune[] = [
-  { valoare: "lv_dimineata", eticheta: "Luni–vineri, dimineața" },
-  { valoare: "lv_pranz", eticheta: "Luni–vineri, la prânz" },
-  { valoare: "lv_dupa_amiaza", eticheta: "Luni–vineri, după-amiaza" },
-  { valoare: "lv_seara", eticheta: "Luni–vineri, seara" },
-  { valoare: "sambata", eticheta: "Sâmbăta" },
-]
-
-export const CANALE_PROGRAMARE: Optiune[] = [
-  { valoare: "telefon", eticheta: "Telefon" },
-  { valoare: "telegram", eticheta: "Telegram" },
-  { valoare: "whatsapp", eticheta: "WhatsApp" },
-]
+/** Textul de informare de sub bifă, cu adresa reală de primire (dacă este configurată). */
+export function textInformare(adresa?: string): string {
+  return UI.informare.replace("{adresa}", adresa ? ` (${adresa})` : "")
+}

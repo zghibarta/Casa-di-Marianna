@@ -9,12 +9,12 @@ import { EcranOprire } from "./ecran-oprire"
 import { Interviu } from "./interviu"
 import { useEvaluare } from "./stare"
 
-export function FluxEvaluare() {
+export function FluxEvaluare({ adresaEmail }: { adresaEmail?: string }) {
   const { stare } = useEvaluare()
   const areRaspunsuri = Object.keys(stare.raspunsuri).length > 0
   const inCurs = stare.etapa === "interviu" && areRaspunsuri
 
-  // Răspunsurile există doar în memorie: avertizăm înainte ca pagina să fie închisă.
+  // Până la „Trimite”, răspunsurile există doar în memorie: avertizăm înainte ca pagina să fie închisă.
   useEffect(() => {
     if (!inCurs) return
     const avertizeaza = (e: BeforeUnloadEvent) => {
@@ -27,7 +27,7 @@ export function FluxEvaluare() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      {stare.etapa === "consimtamant" && <Consimtamant />}
+      {stare.etapa === "consimtamant" && <Consimtamant adresaEmail={adresaEmail} />}
       {stare.etapa === "interviu" && <Interviu />}
       {stare.etapa === "oprit" && <EcranOprire />}
       {stare.etapa === "final" && <EcranFinal />}

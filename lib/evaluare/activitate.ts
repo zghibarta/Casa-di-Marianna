@@ -2,10 +2,20 @@
 // Codul doar propune; Mariana confirmă sau schimbă în fișă.
 
 import type { ConfigMetoda } from "./config"
-import type { ProfilActivitate } from "./tipuri"
+import type { Autoapreciere, ProfilActivitate } from "./tipuri"
+
+const NIVEL_AUTOAPRECIERE: Record<Autoapreciere, string> = {
+  pasiv: "aproape deloc",
+  usor: "mișcare ușoară",
+  mediu: "mișcare moderată",
+  activ: "multă mișcare",
+  foarte_activ: "foarte multă mișcare",
+}
 
 export interface PropunereCoeficient {
   coef: number
+  /** true când propunerea vine doar din autoapreciere, fără orarul antrenamentelor. */
+  dinAutoapreciere: boolean
   antrenamentePeSaptamana: number
   intensePeSaptamana: number
   explicatie: string
@@ -18,9 +28,21 @@ export interface PropunereCoeficient {
  *   intense: 3–5 → activ | 6–7 → foarte activ
  * „Muncă fizică grea → 1,9” nu se propune automat: nu există o întrebare structurată,
  * așa că Mariana o decide din ocupație.
+ *
+ * În interviul scurt nu există orar (`doarAutoapreciere`): nivelul vine din autoapreciere, după
+ * `coeficientDinAutoapreciere` din config.
  */
 export function propuneCoeficient(profil: ProfilActivitate | undefined, metoda: ConfigMetoda): PropunereCoeficient {
   const c = metoda.coeficientiActivitate
+  if (profil?.doarAutoapreciere && profil.autoapreciere) {
+    return {
+      coef: c[metoda.coeficientDinAutoapreciere[profil.autoapreciere]],
+      dinAutoapreciere: true,
+      antrenamentePeSaptamana: 0,
+      intensePeSaptamana: 0,
+      explicatie: `din autoapreciere („${NIVEL_AUTOAPRECIERE[profil.autoapreciere]}”), fără orarul antrenamentelor`,
+    }
+  }
   const antrenamente = profil?.autoapreciere === "pasiv" ? [] : (profil?.antrenamente ?? [])
   const total = antrenamente.reduce((s, a) => s + Math.max(0, a.oriPeSaptamana), 0)
   const intense = antrenamente
@@ -42,5 +64,5 @@ export function propuneCoeficient(profil: ProfilActivitate | undefined, metoda: 
     total === 0
       ? "fără antrenamente regulate"
       : `antrenamente pe săptămână: ${total}, din care intense: ${intense}`
-  return { coef, antrenamentePeSaptamana: total, intensePeSaptamana: intense, explicatie }
+  return { coef, dinAutoapreciere: false, antrenamentePeSaptamana: total, intensePeSaptamana: intense, explicatie }
 }

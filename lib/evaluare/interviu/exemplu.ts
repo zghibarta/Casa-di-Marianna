@@ -2,7 +2,40 @@
 // plan.md (femeie, 30 de ani, 170 cm, 84,5 kg). Nu conține date reale ale vreunei cliente.
 // Folosit în teste și în ecranul de debug.
 
+import type { ConfigEvaluare } from "../config"
 import type { Raspunsuri } from "./raspunsuri"
+
+/** Același caz, cu răspunsurile interviului scurt (10 ecrane). */
+export function raspunsuriExempluScurt(): Raspunsuri {
+  return {
+    varsta: "30",
+    sex: "F",
+    sarcina_alaptare: "nu",
+    inaltime: "170",
+    greutate: "84,5",
+    scopuri: ["slabire", "energie"],
+    scop_slabire_kg: "10",
+    afectiuni: ["niciuna"],
+    tratament_permanent: "nu",
+    alergii_alimentare: "nu",
+    activitate_auto: "usor",
+    mese_pe_zi: "3",
+    omite_mese: "nu",
+    mananca_noaptea: "nu",
+    scoff_1: "nu",
+    scoff_2: "nu",
+    scoff_3: "nu",
+    scoff_4: "nu",
+    scoff_5: "nu",
+    nume: "Clientă de test",
+    contact: "000 000 000",
+  }
+}
+
+/** Exemplul potrivit variantei de interviu din config. */
+export function exempluPentru(config: ConfigEvaluare, azi: Date): Raspunsuri {
+  return config.interviu.varianta === "complet" ? raspunsuriExemplu(azi) : raspunsuriExempluScurt()
+}
 
 export function raspunsuriExemplu(azi: Date): Raspunsuri {
   return {

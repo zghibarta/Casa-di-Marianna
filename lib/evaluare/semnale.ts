@@ -16,7 +16,11 @@ export function semnaleContext(intrare: IntrareCalcul, valoareImc: number, confi
   const c = intrare.context ?? {}
   const rezultat: Semnal[] = []
 
-  if (c.boliCronice) rezultat.push(semnal("boala_cronica", "atentie", "Boală cronică declarată."))
+  if (c.afectiuni && c.afectiuni.length > 0) {
+    rezultat.push(semnal("boala_cronica", "atentie", `Afecțiuni declarate: ${c.afectiuni.join(", ")}.`))
+  } else if (c.boliCronice) {
+    rezultat.push(semnal("boala_cronica", "atentie", "Boală cronică declarată."))
+  }
   if (c.tratament) rezultat.push(semnal("tratament", "atentie", "Tratament medicamentos în curs."))
   if (c.alergii) rezultat.push(semnal("alergie", "atentie", "Alergii declarate."))
   if (c.interventii) rezultat.push(semnal("interventie", "informativ", "Intervenții chirurgicale în antecedente."))

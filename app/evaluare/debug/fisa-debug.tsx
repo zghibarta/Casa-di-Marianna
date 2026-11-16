@@ -14,7 +14,7 @@ import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
 import { calculeazaFisa } from "@/lib/evaluare/calcul"
 import { CONFIG_IMPLICIT, VARIANTA_A, VARIANTA_B, type ConfigEvaluare } from "@/lib/evaluare/config"
 import { randuriCalcul } from "@/lib/evaluare/fisa"
-import { raspunsuriExemplu } from "@/lib/evaluare/interviu/exemplu"
+import { exempluPentru } from "@/lib/evaluare/interviu/exemplu"
 import { construiesteIntrare, randuriFisa } from "@/lib/evaluare/interviu/mapare"
 import { parseazaNumar } from "@/lib/evaluare/interviu/raspunsuri"
 import { construiesteRezumat, verificaRezumat } from "@/lib/evaluare/interviu/rezumat"
@@ -160,7 +160,15 @@ export function FisaDebug() {
   const problemeRezumat = dinInterviu ? verificaRezumat(rezumat) : []
 
   const incarcaExemplu = () => {
-    actualizeaza({ raspunsuri: raspunsuriExemplu(new Date()), etapa: "final", idPas: null, oprire: null })
+    // Exemplul variantei de interviu active; interviul rămâne deschis la primul pas, netrimis.
+    actualizeaza({
+      raspunsuri: exempluPentru(CONFIG_IMPLICIT, new Date()),
+      etapa: "interviu",
+      idPas: null,
+      oprire: null,
+      rezumat: [],
+      trimis: false,
+    })
     setSursa("interviu")
     setSuplimentar(FARA_SUPLIMENTAR)
   }
@@ -172,8 +180,8 @@ export function FisaDebug() {
         <Alert>
           <AlertTitle>Ecran de dezvoltare</AlertTitle>
           <AlertDescription>
-            Nu există în producție. Arată fișa completă pentru Mariana, cu cifre, calculată în browser. Nimic nu se
-            salvează și nu se trimite.
+            Nu există în producție. Arată fișa completă pentru Mariana, cu cifre, calculată în browser. De aici
+            nimic nu se salvează și nu se trimite.
           </AlertDescription>
         </Alert>
         <p className="text-sm">
@@ -281,7 +289,8 @@ export function FisaDebug() {
           <section className="space-y-3 rounded-lg border p-4">
             <h2 className="text-lg font-semibold md:text-xl">Starea interviului</h2>
             <p className="text-sm">
-              Etapă: <code>{stare.etapa}</code>
+              Varianta de interviu: <code>{CONFIG_IMPLICIT.interviu.varianta}</code> · etapă:{" "}
+              <code>{stare.etapa}</code>
               {stare.oprire && (
                 <>
                   {" "}

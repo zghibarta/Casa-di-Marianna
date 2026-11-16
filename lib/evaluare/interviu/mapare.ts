@@ -3,12 +3,19 @@
 
 import type { ConfigEvaluare } from "../config"
 import { fmtNumar } from "../afisare"
-import { varstaInAni } from "../formule"
 import type { Antrenament, Autoapreciere, IntrareCalcul, Masuratori, Sex } from "../tipuri"
-import { campuriVizibile, frecventaPeSaptamana, numaraScoff, raspunsuriActive } from "./graf"
-import { PASI, type Camp } from "./intrebari"
+import {
+  areDiabetCuInsulina,
+  campuriVizibile,
+  frecventaPeSaptamana,
+  numaraScoff,
+  optiuniCamp,
+  raspunsuriActive,
+  varstaDinRaspunsuri,
+} from "./graf"
+import { pasiInterviu, type Camp } from "./intrebari"
 import { antrenamente, esteDa, esteGol, lista, numar, parseazaNumar, text, type Raspunsuri } from "./raspunsuri"
-import { BLOCURI, CAMPURI, OPTIUNI } from "./texte"
+import { BLOCURI, OPTIUNI, textCamp } from "./texte"
 
 const SAPTAMANI_PE_LUNA = 52 / 12
 
@@ -43,14 +50,14 @@ export interface OptiuniMapare {
   coefActivitate?: number
 }
 
-/** null dacă lipsesc datele de bază (data nașterii, sex, înălțime, greutate). */
+/** null dacă lipsesc datele de bază (vârstă sau data nașterii, sex, înălțime, greutate). */
 export function construiesteIntrare(
   raspunsuri: Raspunsuri,
   config: ConfigEvaluare,
   optiuni: OptiuniMapare,
 ): IntrareCalcul | null {
   const r = raspunsuriActive(raspunsuri, config)
-  const varsta = varstaInAni(text(r, "data_nasterii"), optiuni.azi)
+  const varsta = varstaDinRaspunsuri(r, optiuni.azi)
   const sex = text(r, "sex")
   const inaltime = numar(r, "inaltime")
   const greutate = numar(r, "greutate")
@@ -60,6 +67,9 @@ export function construiesteIntrare(
   const kgDorite = numar(r, "scop_slabire_kg")
   const luniDorite = numar(r, "scop_slabire_luni")
   const autoapreciere = text(r, "activitate_auto")
+  // Interviul scurt nu cere orarul antrenamentelor: coeficientul se propune din autoapreciere.
+  const faraOrar = config.interviu.varianta === "scurt"
+  const afectiuni = lista(r, "afectiuni").filter((x) => x !== "niciuna")
   const motivatii = [numar(r, "motivatie_schimbare"), numar(r, "motivatie_recomandari")].filter(
     (v): v is number => v !== undefined,
   )
@@ -74,17 +84,24 @@ export function construiesteIntrare(
     activitate:
       autoapreciere === ""
         ? undefined
-        : { autoapreciere: autoapreciere as Autoapreciere, antrenamente: antrenamenteDinRaspunsuri(r) },
+        : {
+            autoapreciere: autoapreciere as Autoapreciere,
+            antrenamente: faraOrar ? [] : antrenamenteDinRaspunsuri(r),
+            doarAutoapreciere: faraOrar,
+          },
     masuratori: optiuni.masuratori,
     ritmDoritKgPeSaptamana:
       scopSlabire && kgDorite && luniDorite ? kgDorite / (luniDorite * SAPTAMANI_PE_LUNA) : undefined,
     sarcinaSauAlaptare: esteDa(r, "sarcina_alaptare"),
-    diabetCuInsulina: esteDa(r, "diabet") && esteDa(r, "insulina"),
+    diabetCuInsulina: areDiabetCuInsulina(r),
     scoffRaspunsuriDa: numaraScoff(r),
     context: {
-      boliCronice: esteDa(r, "boli_cronice"),
-      tratament: esteDa(r, "tratament"),
-      alergii: esteDa(r, "alergii"),
+      boliCronice: esteDa(r, "boli_cronice") || afectiuni.length > 0,
+      afectiuni: afectiuni.map(
+        (x) => OPTIUNI.afectiuni.find((opt) => opt.valoare === x)?.eticheta.toLowerCase() ?? x,
+      ),
+      tratament: esteDa(r, "tratament") || esteDa(r, "tratament_permanent"),
+      alergii: esteDa(r, "alergii") || esteDa(r, "alergii_alimentare"),
       interventii: esteDa(r, "interventii"),
       suplimente: esteDa(r, "suplimente"),
       fumat: esteDa(r, "fumat"),
@@ -99,8 +116,7 @@ export function construiesteIntrare(
 // ---------- răspunsurile, formatate pentru fișă ----------
 
 function eticheta(camp: Camp, valoare: string): string {
-  const set = camp.tip === "da_nu" ? OPTIUNI.da_nu : camp.optiuni ? OPTIUNI[camp.optiuni] : []
-  return set.find((opt) => opt.valoare === valoare)?.eticheta ?? valoare
+  return optiuniCamp(camp).find((opt) => opt.valoare === valoare)?.eticheta ?? valoare
 }
 
 export function formateazaRaspuns(camp: Camp, r: Raspunsuri): string {
@@ -149,12 +165,12 @@ export interface RandFisa {
 /** Toate întrebările vizibile, cu răspunsul formatat, în ordinea grafului. */
 export function randuriFisa(raspunsuri: Raspunsuri, config: ConfigEvaluare): RandFisa[] {
   const randuri: RandFisa[] = []
-  for (const pas of PASI) {
+  for (const pas of pasiInterviu(config)) {
     for (const camp of campuriVizibile(pas, raspunsuri, config)) {
       randuri.push({
         id: camp.id,
         bloc: BLOCURI[pas.bloc],
-        intrebare: CAMPURI[camp.id]?.intrebare ?? camp.id,
+        intrebare: textCamp(camp.id, config.interviu.varianta)?.intrebare ?? camp.id,
         raspuns: formateazaRaspuns(camp, raspunsuri),
       })
     }

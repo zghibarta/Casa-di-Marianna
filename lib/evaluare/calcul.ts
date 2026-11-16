@@ -28,6 +28,7 @@ import type {
   Ritm,
   Semnal,
   Sex,
+  SursaCoeficient,
 } from "./tipuri"
 
 function valideazaIntrare(i: IntrareCalcul): void {
@@ -209,12 +210,12 @@ export function calculeazaFisa(intrare: IntrareCalcul, config: ConfigEvaluare = 
 
   const rmb = calculeazaRmb(intrare, indicatori, metoda)
 
-  let activitate: { coef: number; sursa: "confirmat" | "propus" | "implicit"; explicatie: string }
+  let activitate: { coef: number; sursa: SursaCoeficient; explicatie: string }
   if (intrare.coefActivitate !== undefined) {
     activitate = { coef: intrare.coefActivitate, sursa: "confirmat", explicatie: "coeficient introdus manual" }
   } else if (intrare.activitate) {
     const p = propuneCoeficient(intrare.activitate, metoda)
-    activitate = { coef: p.coef, sursa: "propus", explicatie: p.explicatie }
+    activitate = { coef: p.coef, sursa: p.dinAutoapreciere ? "autoapreciere" : "propus", explicatie: p.explicatie }
   } else {
     activitate = {
       coef: metoda.coeficientiActivitate.sedentar,

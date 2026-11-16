@@ -1,7 +1,10 @@
+// Interviul complet (plan.md §3). Este dezactivat implicit din config (`interviu.varianta`);
+// testele îl pornesc explicit, ca să rămână gata de reactivat. Interviul scurt: interviu-scurt.test.ts.
+
 import { describe, expect, it } from "vitest"
 import { rotunjit as r } from "../afisare"
 import { calculeazaFisa } from "../calcul"
-import { CONFIG_IMPLICIT, VARIANTA_A, type ConfigEvaluare } from "../config"
+import { CONFIG_IMPLICIT, VARIANTA_A, cuVariantaInterviu, type ConfigEvaluare } from "../config"
 import { raspunsuriExemplu } from "../interviu/exemplu"
 import {
   campuriVizibile,
@@ -11,19 +14,25 @@ import {
   progres,
   raspunsuriActive,
 } from "../interviu/graf"
-import { PASI, type Pas } from "../interviu/intrebari"
+import { PASI_COMPLET as PASI, pasiInterviu, type Pas } from "../interviu/intrebari"
 import { construiesteIntrare, oreDeSomn, randuriFisa } from "../interviu/mapare"
 import type { Raspunsuri } from "../interviu/raspunsuri"
 import { construiesteRezumat, verificaRezumat } from "../interviu/rezumat"
 import { CAMPURI, OPRIRI, OPTIUNI, UI } from "../interviu/texte"
 
 const AZI = new Date(2026, 10, 16)
-const cfg = CONFIG_IMPLICIT
+const cfg = cuVariantaInterviu(CONFIG_IMPLICIT, "complet")
 const pas = (id: string): Pas => PASI.find((p) => p.id === id)!
 const vizibile = (idPas: string, rasp: Raspunsuri, config = cfg) =>
   campuriVizibile(pas(idPas), rasp, config).map((c) => c.id)
 
 describe("structura grafului", () => {
+  it("varianta „complet” din config pornește chestionarul întreg", () => {
+    expect(pasiInterviu(cfg)).toBe(PASI)
+    expect(CONFIG_IMPLICIT.interviu.varianta).toBe("scurt")
+    expect(pasiInterviu(CONFIG_IMPLICIT)).not.toBe(PASI)
+  })
+
   it("fiecare câmp are o formulare și id-urile sunt unice", () => {
     const ids = PASI.flatMap((p) => p.campuri.map((c) => c.id))
     expect(new Set(ids).size).toBe(ids.length)
@@ -171,23 +180,27 @@ describe("opriri în interviu", () => {
     for (const tip of ["sarcina_alaptare", "insulina", "imc_sub_18_5", "tulburari_alimentare"] as const) {
       expect(OPRIRI[tip].paragrafe.join(" ")).not.toMatch(/\d/)
     }
-    // Faza 1 nu trimite nimic, deci mesajul nu promite că Mariana a primit ceva.
-    expect(cfg.interviu.trimitereActiva).toBe(false)
-    expect(UI.oprireFaraTrimitere).not.toMatch(/va primi/)
+    // La oprire răspunsurile nu pleacă nicăieri, deci mesajul nu promite că Mariana a primit ceva.
+    expect(UI.oprireNetrimis).not.toMatch(/va primi/)
+    expect(UI.oprireMinor).not.toMatch(/va primi/)
   })
 })
 
 describe("progres", () => {
   it("merge de la primul bloc la ultimul", () => {
     const rasp = raspunsuriExemplu(AZI)
+    const ecrane = pasiVizibili(rasp, cfg).length + 1 // consimțământul este pasul 1
     const inceput = progres("data_nasterii", rasp, cfg)
     expect(inceput.indexBloc).toBe(0)
     expect(inceput.totalBlocuri).toBe(12)
-    expect(inceput.procent).toBe(0)
+    expect(inceput).toMatchObject({ pas: 2, totalPasi: ecrane })
+    expect(inceput.procent).toBeLessThan(5)
     const sfarsit = progres("mirodenii", rasp, cfg)
     expect(sfarsit.indexBloc).toBe(11)
     expect(sfarsit.blocuri.filter((b) => b.stare === "terminat")).toHaveLength(11)
+    expect(sfarsit.pas).toBe(ecrane)
     expect(sfarsit.procent).toBeGreaterThan(90)
+    expect(sfarsit.procent).toBeLessThan(100)
   })
 })
 
@@ -210,7 +223,8 @@ describe("de la răspunsuri la calcul", () => {
   })
 
   it("reproduce studiul de caz: coeficient propus 1,375 și ținta din T1", () => {
-    const rez = calculeazaFisa(construiesteIntrare(rasp, VARIANTA_A, { azi: AZI })!, VARIANTA_A)
+    const variantaA = cuVariantaInterviu(VARIANTA_A, "complet")
+    const rez = calculeazaFisa(construiesteIntrare(rasp, variantaA, { azi: AZI })!, variantaA)
     expect(rez.stare).toBe("calculat")
     if (rez.stare !== "calculat") return
     expect(rez.activitate).toMatchObject({ coef: 1.375, sursa: "propus" })

@@ -1,7 +1,8 @@
 "use client"
 
 // Starea evaluării trăiește doar în memoria browserului (React state). Nu se scrie în
-// localStorage, în URL sau pe server: la reîncărcarea paginii se pierde, intenționat (Faza 1).
+// localStorage sau în URL: la reîncărcarea paginii se pierde, intenționat. Răspunsurile pleacă
+// spre server o singură dată, la „Trimite”, și se șterg din memorie după ce au fost trimise.
 
 import { createContext, useContext, useMemo, useState, type ReactNode } from "react"
 import type { Raspunsuri } from "@/lib/evaluare/interviu/raspunsuri"
@@ -11,7 +12,6 @@ export interface Consimtamant {
   versiune: string
   data: string
   sanatate: boolean
-  varsta: boolean
   ai: boolean
 }
 
@@ -22,6 +22,10 @@ export interface StareEvaluare {
   /** Id-ul pasului curent din graf; null = primul pas vizibil. */
   idPas: string | null
   oprire: Oprire | null
+  /** Observațiile de pe ecranul final, calculate înainte ca răspunsurile să fie șterse. */
+  rezumat: string[]
+  /** true după ce serverul a confirmat trimiterea fișei. */
+  trimis: boolean
 }
 
 const STARE_INITIALA: StareEvaluare = {
@@ -30,6 +34,8 @@ const STARE_INITIALA: StareEvaluare = {
   raspunsuri: {},
   idPas: null,
   oprire: null,
+  rezumat: [],
+  trimis: false,
 }
 
 interface ContextEvaluare {

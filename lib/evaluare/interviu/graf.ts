@@ -5,9 +5,9 @@ import { FRECVENTE, type ConfigEvaluare, type IdFrecventa } from "../config"
 import { imc, varstaInAni } from "../formule"
 import { verificaOpriri } from "../opriri"
 import type { Oprire } from "../tipuri"
-import { PASI, SCOFF_IDS, type Camp, type Pas } from "./intrebari"
-import { antrenamente, esteDa, esteGol, numar, parseazaNumar, text, type Raspunsuri } from "./raspunsuri"
-import { BLOCURI, ERORI, type IdBloc } from "./texte"
+import { LIMITE_TEXT, SCOFF_IDS, pasiInterviu, type Camp, type Pas } from "./intrebari"
+import { antrenamente, esteDa, esteGol, lista, numar, parseazaNumar, text, type Raspunsuri } from "./raspunsuri"
+import { BLOCURI, ERORI, OPTIUNI, type IdBloc, type Optiune } from "./texte"
 
 export function campuriVizibile(pas: Pas, r: Raspunsuri, config: ConfigEvaluare): Camp[] {
   return pas.campuri.filter((camp) => (camp.vizibil ? camp.vizibil(r, config) : true))
@@ -15,7 +15,7 @@ export function campuriVizibile(pas: Pas, r: Raspunsuri, config: ConfigEvaluare)
 
 /** Pașii care au cel puțin un câmp vizibil, în ordinea grafului. */
 export function pasiVizibili(r: Raspunsuri, config: ConfigEvaluare): Pas[] {
-  return PASI.filter((pas) => campuriVizibile(pas, r, config).length > 0)
+  return pasiInterviu(config).filter((pas) => campuriVizibile(pas, r, config).length > 0)
 }
 
 /**
@@ -24,12 +24,25 @@ export function pasiVizibili(r: Raspunsuri, config: ConfigEvaluare): Pas[] {
  */
 export function raspunsuriActive(r: Raspunsuri, config: ConfigEvaluare): Raspunsuri {
   const active: Raspunsuri = {}
-  for (const pas of PASI) {
+  for (const pas of pasiInterviu(config)) {
     for (const camp of campuriVizibile(pas, r, config)) {
       if (!esteGol(r[camp.id])) active[camp.id] = r[camp.id]
     }
   }
   return active
+}
+
+export function optiuniCamp(camp: Camp): Optiune[] {
+  if (camp.tip === "da_nu") return OPTIUNI.da_nu
+  return camp.optiuni ? OPTIUNI[camp.optiuni] : []
+}
+
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+/** Un număr de telefon (cel puțin 6 cifre) sau o adresă de email. */
+export function esteContactValid(valoare: string): boolean {
+  const v = valoare.trim()
+  return EMAIL.test(v) || (v.match(/\d/g) ?? []).length >= 6
 }
 
 function eroareCamp(camp: Camp, r: Raspunsuri, azi: Date): string | null {
@@ -56,6 +69,23 @@ function eroareCamp(camp: Camp, r: Raspunsuri, azi: Date): string | null {
     if (varsta === null || varsta < 0 || varsta > 120) return ERORI.data
   }
   if (camp.tip === "ora" && !/^\d{2}:\d{2}$/.test(text(r, camp.id))) return ERORI.ora
+
+  if (camp.tip === "text" || camp.tip === "text_lung") {
+    if (typeof v !== "string") return ERORI.obligatoriu
+    const max = LIMITE_TEXT[camp.tip]
+    if (v.length > max) return ERORI.preaLung(max)
+    if (camp.format === "contact" && !esteContactValid(v)) return ERORI.contact
+  }
+  // Interfața nu poate trimite altceva decât opțiunile afișate; serverul verifică din nou.
+  if (camp.tip === "da_nu" || camp.tip === "alegere" || camp.tip === "frecventa") {
+    if (!optiuniCamp(camp).some((opt) => opt.valoare === v)) return ERORI.optiune
+  }
+  if (camp.tip === "alegere_multipla") {
+    const alese = lista(r, camp.id)
+    const permise = optiuniCamp(camp).map((opt) => opt.valoare)
+    if (!Array.isArray(v) || alese.length !== v.length || alese.some((x) => !permise.includes(x))) return ERORI.optiune
+    if (camp.exclusiv && alese.includes(camp.exclusiv) && alese.length > 1) return ERORI.optiune
+  }
   return null
 }
 
@@ -75,17 +105,29 @@ export function eroriPas(pas: Pas, r: Raspunsuri, config: ConfigEvaluare, azi: D
  */
 export function oprireDinRaspunsuri(r: Raspunsuri, config: ConfigEvaluare, azi: Date): Oprire | null {
   const a = raspunsuriActive(r, config)
-  const varsta = text(a, "data_nasterii") ? varstaInAni(text(a, "data_nasterii"), azi) : null
   const inaltime = numar(a, "inaltime")
   const greutate = numar(a, "greutate")
   const opriri = verificaOpriri({
-    varstaAni: varsta ?? undefined,
+    varstaAni: varstaDinRaspunsuri(a, azi) ?? undefined,
     sarcinaSauAlaptare: esteDa(a, "sarcina_alaptare"),
-    diabetCuInsulina: esteDa(a, "diabet") && esteDa(a, "insulina"),
+    diabetCuInsulina: areDiabetCuInsulina(a),
     imc: inaltime && greutate ? imc(greutate, inaltime) : undefined,
     scoffRaspunsuriDa: numaraScoff(a),
   })
   return opriri[0] ?? null
+}
+
+/** Vârsta în ani: scrisă direct (interviul scurt) sau calculată din data nașterii (cel complet). */
+export function varstaDinRaspunsuri(r: Raspunsuri, azi: Date): number | null {
+  const scrisa = numar(r, "varsta")
+  if (scrisa !== undefined) return scrisa
+  return text(r, "data_nasterii") ? varstaInAni(text(r, "data_nasterii"), azi) : null
+}
+
+/** Diabetul vine din lista de afecțiuni (interviul scurt) sau din întrebarea dedicată (cel complet). */
+export function areDiabetCuInsulina(r: Raspunsuri): boolean {
+  const diabet = esteDa(r, "diabet") || lista(r, "afectiuni").includes("diabet")
+  return diabet && esteDa(r, "insulina")
 }
 
 export function numaraScoff(r: Raspunsuri): number {
@@ -96,8 +138,17 @@ export interface Progres {
   blocuri: { id: IdBloc; titlu: string; stare: "terminat" | "curent" | "urmeaza" }[]
   indexBloc: number
   totalBlocuri: number
-  /** 0–100, după pașii vizibili parcurși. */
+  /** Numărul ecranului curent, socotind consimțământul ca pasul 1. */
+  pas: number
+  /** Numărul total de ecrane, cu tot cu consimțământ. */
+  totalPasi: number
+  /** 0–100, după ecranele deja parcurse. */
   procent: number
+}
+
+/** Numărul de ecrane ale interviului, cu tot cu consimțământ (pentru „Pasul 1 din 10”). */
+export function totalEcrane(r: Raspunsuri, config: ConfigEvaluare): number {
+  return pasiVizibili(r, config).length + 1
 }
 
 export function progres(idPasCurent: string, r: Raspunsuri, config: ConfigEvaluare): Progres {
@@ -106,7 +157,8 @@ export function progres(idPasCurent: string, r: Raspunsuri, config: ConfigEvalua
     0,
     pasi.findIndex((p) => p.id === idPasCurent),
   )
-  const idBlocuri = (Object.keys(BLOCURI) as IdBloc[]).filter((id) => pasi.some((p) => p.bloc === id))
+  // Blocurile, în ordinea în care apar în varianta de interviu aleasă.
+  const idBlocuri = [...new Set(pasi.map((p) => p.bloc))] as IdBloc[]
   const indexBloc = Math.max(0, idBlocuri.indexOf(pasi[index]?.bloc ?? idBlocuri[0]))
   return {
     blocuri: idBlocuri.map((id, i) => ({
@@ -116,7 +168,9 @@ export function progres(idPasCurent: string, r: Raspunsuri, config: ConfigEvalua
     })),
     indexBloc,
     totalBlocuri: idBlocuri.length,
-    procent: pasi.length === 0 ? 0 : Math.round((index / pasi.length) * 100),
+    pas: index + 2,
+    totalPasi: pasi.length + 1,
+    procent: Math.round(((index + 1) / (pasi.length + 1)) * 100),
   }
 }
 
