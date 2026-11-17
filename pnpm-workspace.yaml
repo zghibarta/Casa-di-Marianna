@@ -1,0 +1,3 @@
+overrides:
+  postcss: ^8.5.33
+  vite: ^8.3.3
